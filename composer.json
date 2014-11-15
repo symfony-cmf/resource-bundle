@@ -1,0 +1,37 @@
+{
+    "name": "symfony-cmf/resource-bundle",
+    "description": "Bundle which facilitates document resource location",
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "puli/puli": "dev-master"
+    },
+    "require-dev": {
+        "symfony-cmf/testing": "~1.1",
+        "phpspec/prophecy-phpunit": "~1.0.0",
+        "matthiasnoback/symfony-dependency-injection-test": "0.*",
+        "matthiasnoback/symfony-config-test": "0.*",
+        "doctrine/phpcr-odm": "~1.2"
+    },
+    "suggest": {
+        "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
+        "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\ResourceBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
