@@ -17,21 +17,16 @@ use Puli\Repository\ResourceNotFoundException;
 use Puli\Resource\Collection\ResourceCollection;
 use Symfony\Cmf\Bundle\ResourceBundle\Resource\ObjectResource;
 
-class PhpcrOdmRepository implements ResourceRepositoryInterface
+class PhpcrRepository implements ResourceRepositoryInterface
 {
     /**
      * @var ManagerRegistry
      */
-    private $managerRegistry;
+    private $session;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(SessionInterface $session)
     {
-        $this->managerRegistry = $managerRegistry;
-    }
-
-    protected function getManager()
-    {
-        return $this->managerRegistry->getManager();
+        $this->session = $session;
     }
 
     /**
@@ -41,17 +36,16 @@ class PhpcrOdmRepository implements ResourceRepositoryInterface
      */
     public function get($path)
     {
-        $document = $this->getManager()->find(null, $path);
-
-        if (null === $document) {
+        try {
+            $node = $this->session->getNode();
+        } catch (\PathNotFoundException $e) {
             throw new ResourceNotFoundException(sprintf(
-                'No PHPCR-ODM document could be found at "%s"',
+                'No PHPCR node could be found at "%s"',
                 $path
-            ));
+            ), null, $e);
         }
 
-        $absPath = $this->getManager()->getNodeForDocument($document)->getPath();
-        $resource = new ObjectResource($absPath, $document);
+        $resource = new ObjectResource($node->getPath(), $node);
 
         return $resource;
     }
@@ -64,6 +58,9 @@ class PhpcrOdmRepository implements ResourceRepositoryInterface
      */
     public function find($selector)
     {
+        $nodes = $this->globFinder->find($selector);
+
+        return $nodes;
     }
 
     /**

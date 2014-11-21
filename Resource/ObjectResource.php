@@ -75,6 +75,6 @@ class ObjectResource implements ResourceInterface
      */
     public function getName()
     {
-        return basename($this->absPath);
+        return basename($this->name);
     }
 }
