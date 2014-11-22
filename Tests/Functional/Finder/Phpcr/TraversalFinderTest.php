@@ -45,6 +45,19 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
+                '/foo/*/*',
+                array(
+                    '/foo/foo/baz',
+                ),
+            ),
+            array(
+                '/*/foo/*',
+                array(
+                    '/foo/foo/baz',
+                    '/bar/foo/baz',
+                ),
+            ),
+            array(
                 '/*/bar',
                 array(
                     '/foo/bar',
@@ -54,8 +67,8 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
             array(
                 '/foo/*',
                 array(
-                '/foo/foo',
-                '/foo/bar',
+                    '/foo/foo',
+                    '/foo/bar',
                 ),
             ),
             array(
@@ -76,6 +89,15 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
                     '/foo/bar'
                 ),
             ),
+            array(
+                '/*/*',
+                array(
+                    '/foo/foo',
+                    '/foo/bar',
+                    '/bar/foo',
+                    '/bar/bar',
+                ),
+            ),
         );
     }
 
@@ -85,16 +107,12 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
     public function testFind($path, $expected)
     {
         $this->loadFixtures();
-        error_log('SEL: ' .$path);
         $nodes = $this->finder->find($path);
 
         $paths = array();
         foreach ($nodes as $node) {
             $paths[] = $node->getPath();
-            error_log($node->getPath());
         }
-
-        die('end');
 
         $this->assertSame($expected, $paths);
     }
@@ -103,13 +121,14 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
     {
         $rootNode = $this->session->getRootNode();
         $node1 = $rootNode->addNode('foo');
-        $node1->addNode('bar');
-        $node4 = $node1->addNode('foo');
-        $node4->addNode('baz');
+            $node1->addNode('bar');
+                $node4 = $node1->addNode('foo');
+                    $node4->addNode('baz');
         $node2 = $rootNode->addNode('bar');
         $node2->addNode('bar');
         $node3 = $node2->addNode('foo');
         $node3->addNode('baz');
+        $this->session->save();
     }
 }
 

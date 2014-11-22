@@ -50,7 +50,7 @@ class SelectorParser
 
         if (false === strpos($selector, '/')) {
             return array(
-                $selector => self::T_STATIC | self::T_LAST
+                array($selector, self::T_STATIC | self::T_LAST)
             );
         }
 
@@ -68,7 +68,7 @@ class SelectorParser
                 $flags = $flags | self::T_LAST;
             }
 
-            $segments[$element] = $flags;
+            $segments[] = array($element, $flags);
         }
 
         return $segments;

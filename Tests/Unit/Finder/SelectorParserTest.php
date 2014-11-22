@@ -37,36 +37,36 @@ class SelectorParserTest extends ProphecyTestCase
             array(
                 '/foo',
                 array(
-                    'foo' => SelectorParser::T_STATIC | SelectorParser::T_LAST,
+                    array('foo', SelectorParser::T_STATIC | SelectorParser::T_LAST),
                 ),
             ),
             array(
                 '/foo/bar',
                 array(
-                    'foo' => SelectorParser::T_STATIC,
-                    'bar' => SelectorParser::T_STATIC | SelectorParser::T_LAST,
+                    array('foo', SelectorParser::T_STATIC),
+                    array('bar', SelectorParser::T_STATIC | SelectorParser::T_LAST),
                 ),
             ),
             array(
                 '/*/bar',
                 array(
-                    '*' => SelectorParser::T_PATTERN,
-                    'bar' => SelectorParser::T_STATIC | SelectorParser::T_LAST,
+                    array('*', SelectorParser::T_PATTERN),
+                    array('bar', SelectorParser::T_STATIC | SelectorParser::T_LAST),
                 ),
             ),
             array(
                 '/foo?/bar',
                 array(
-                    'foo?' => SelectorParser::T_PATTERN,
-                    'bar' => SelectorParser::T_STATIC | SelectorParser::T_LAST,
+                    array('foo?', SelectorParser::T_PATTERN),
+                    array('bar', SelectorParser::T_STATIC | SelectorParser::T_LAST),
                 ),
             ),
             array(
                 '/foo?/bar/baz*',
                 array(
-                    'foo?' => SelectorParser::T_PATTERN,
-                    'bar' => SelectorParser::T_STATIC,
-                    'baz*' => SelectorParser::T_PATTERN | SelectorParser::T_LAST,
+                    array('foo?', SelectorParser::T_PATTERN),
+                    array('bar', SelectorParser::T_STATIC),
+                    array('baz*', SelectorParser::T_PATTERN | SelectorParser::T_LAST),
                 ),
             ),
         );

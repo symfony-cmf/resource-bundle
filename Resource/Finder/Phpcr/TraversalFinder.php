@@ -50,42 +50,63 @@ class TraversalFinder implements FinderInterface
      */
     public function find($selector)
     {
-        var_dump(': ' .$selector);
+        if ($selector == '/') {
+            return array($this->getNode(array()));
+        }
+
         $segments = $this->parser->parse($selector);
 
-        return $this->traverse($segments);
-    }
-
-    private function traverse($segments, $basePath = null)
-    {
-        $path = '';
         $ret = array();
-        foreach ($segments as $element => $bitmask) {
-
-            if ($bitmask & SelectorParser::T_STATIC) {
-                $path .= '/' . $element;
-                continue;
-            }
-
-            if ($bitmask & SelectorParser::T_PATTERN) {
-                $children = $this->getNodes($path, $element);
-
-                foreach ($children as $child) {
-                    // do something
-                }
-            }
-        }
+        $this->traverse(null, $segments, $ret);
 
         return $ret;
     }
 
-    private function getNode($absPath)
+    private function traverse($node = null, $segments, &$ret = array())
     {
-        if ($absPath === '') {
-            $absPath = '/';
+        $path = array();
+
+        if (null !== $node) {
+            $path = explode('/', substr($node->getPath(), 1));
         }
 
+        do {
+            list($element, $bitmask) = array_shift($segments);
+
+            if ($bitmask & SelectorParser::T_STATIC) {
+                $path[] = $element;
+
+                if ($bitmask & SelectorParser::T_LAST) {
+                    if ($node = $this->getNode($path)) {
+                        $ret[] = $node;
+                        break;
+                    }
+                }
+            }
+
+            if ($bitmask & SelectorParser::T_PATTERN) {
+                $parentNode = $this->getNode($path);
+
+                $children = $parentNode->getNodes($element);
+
+                foreach ($children as $child) {
+                    if ($bitmask & SelectorParser::T_LAST) {
+                        $ret[] = $child;
+                    } else {
+                        $this->traverse($child, $segments, $ret);
+                    }
+                }
+
+                return;
+            }
+        } while (count($segments));
+    }
+
+    private function getNode(array $path)
+    {
+        $absPath = '/' . implode('/', $path);
         $node = null;
+
         try {
             $node = $this->session->getNode($absPath);
         } catch (\PHPCR\PathNotFoundException $e) {
@@ -93,16 +114,5 @@ class TraversalFinder implements FinderInterface
         }
 
         return $node;
-    }
-
-    private function getNodes($path, $pattern)
-    {
-        $node = $this->getNode($path);
-
-        if (null === $node) {
-            return array();
-        }
-
-        return $node->getNodes($pattern);
     }
 }
