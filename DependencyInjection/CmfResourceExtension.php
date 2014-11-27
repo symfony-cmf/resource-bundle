@@ -29,6 +29,7 @@ class CmfResourceExtension extends Extension
         $processor = new Processor();
         $configuration = new Configuration();
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
         $loader->load('resource.xml');
 
         $config = $processor->processConfiguration($configuration, $configs);

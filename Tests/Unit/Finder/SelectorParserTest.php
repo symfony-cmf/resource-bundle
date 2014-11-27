@@ -30,6 +30,12 @@ class SelectorParserTest extends ProphecyTestCase
     {
         return array(
             array(
+                '/z*',
+                array(
+                    array('z*', SelectorParser::T_PATTERN | SelectorParser::T_LAST),
+                ),
+            ),
+            array(
                 '/',
                 array(
                 ),

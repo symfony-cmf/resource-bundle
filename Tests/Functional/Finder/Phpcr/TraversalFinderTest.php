@@ -51,6 +51,12 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             array(
+                '/foo/*/*',
+                array(
+                    '/foo/foo/baz',
+                ),
+            ),
+            array(
                 '/*/foo/*',
                 array(
                     '/foo/foo/baz',
@@ -98,6 +104,25 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
                     '/bar/bar',
                 ),
             ),
+            array(
+                '/z*',
+                array(
+                    '/zzz'
+                ),
+            ),
+            array(
+                '/fo*/*',
+                array(
+                    '/foo/foo',
+                    '/foo/bar',
+                ),
+            ),
+            array(
+                '/fo*/*oo',
+                array(
+                    '/foo/foo',
+                ),
+            ),
         );
     }
 
@@ -121,13 +146,14 @@ class TraversalFinderTest extends \PHPUnit_Framework_TestCase
     {
         $rootNode = $this->session->getRootNode();
         $node1 = $rootNode->addNode('foo');
-            $node1->addNode('bar');
-                $node4 = $node1->addNode('foo');
-                    $node4->addNode('baz');
+        $node1->addNode('bar');
+        $node4 = $node1->addNode('foo');
+        $node4->addNode('baz');
         $node2 = $rootNode->addNode('bar');
         $node2->addNode('bar');
         $node3 = $node2->addNode('foo');
         $node3->addNode('baz');
+        $rootNode->addNode('zzz');
         $this->session->save();
     }
 }

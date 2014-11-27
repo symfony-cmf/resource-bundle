@@ -9,9 +9,15 @@
             "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "/home/daniel/www/symfony-cmf/CmfResource"
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
-        "puli/puli": "dev-master"
+        "symfony-cmf/resource": "dev-master"
     },
     "require-dev": {
         "symfony-cmf/testing": "~1.1",
