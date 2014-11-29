@@ -34,4 +34,9 @@ class CmfResourceExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
     }
+
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/' . $this->getAlias();
+    }
 }

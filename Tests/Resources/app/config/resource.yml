@@ -1,0 +1,20 @@
+cmf_resource:
+    repository:
+        doctrine_phpcr_odm:
+            -
+                name: content
+                basepath: /cmf/content
+            -
+                name: articles
+                basepath: /cmf/articles
+
+        composite:
+            -
+                name: stuff
+                mounts:
+                    -
+                        repository: content
+                        path: /content
+                    -
+                        repository: articles
+                        path: /articles
