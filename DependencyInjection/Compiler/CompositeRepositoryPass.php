@@ -48,11 +48,12 @@ class CompositeRepositoryPass implements CompilerPassInterface
             }
 
             $definition = $container->getDefinition($id);
+            $newMethodCalls = array();
 
             // the second argument to mount is a Repository but earlier
             // we populated with the ID of the service we want. Now it
             // should be replaced with a Reference.
-            foreach ($definition->getMethodCalls() as &$methodCall) {
+            foreach ($definition->getMethodCalls() as $methodCall) {
                 $repositoryId = $methodCall[1][1];
 
                 if (array_key_exists($repositoryId, $map)) {
@@ -64,7 +65,10 @@ class CompositeRepositoryPass implements CompilerPassInterface
                 }
 
                 $methodCall[1][1] = $reference;
+                $newMethodCalls[] = $methodCall;
             }
+
+            $definition->setMethodCalls($newMethodCalls);
         }
     }
 }
