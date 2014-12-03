@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 {
@@ -35,8 +36,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
     public function provideConfig()
     {
         return array(
-            array(__DIR__ . '/fixtures/config.yml'),
             array(__DIR__ . '/fixtures/config.xml'),
+            array(__DIR__ . '/fixtures/config.yml'),
         );
     }
 

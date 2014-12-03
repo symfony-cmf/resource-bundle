@@ -6,29 +6,14 @@
     <cmf_resource:config>
         <cmf_resource:repository>
 
-            <cmf_resource:doctrine-phpcr-odm>
-                <cmf_resource:name>content</cmf_resource:name>
-                <cmf_resource:basepath>/cmf/content</cmf_resource:basepath>
-            </cmf_resource:doctrine-phpcr-odm>
+            <cmf_resource:doctrine-phpcr-odm-repository name="content" basepath="/cmf/content" />
+            <cmf_resource:doctrine-phpcr-odm-repository name="articles" basepath="/cmf/articles" />
 
-            <cmf_resource:doctrine-phpcr-odm>
-                <cmf_resource:name>articles</cmf_resource:name>
-                <cmf_resource:basepath>/cmf/articles</cmf_resource:basepath>
-            </cmf_resource:doctrine-phpcr-odm>
+            <cmf_resource:composite-repository name="stuff">
+                <cmf_resource:mount repository="content" mountpoint="/content" />
+                <cmf_resource:mount repository="articles" mountpoint="/articles" />
+            </cmf_resource:composite-repository>
 
-            <cmf_resource:composite>
-                <cmf_resource:name>stuff</cmf_resource:name>
-                <cmf_resource:mounts>
-                    <cmf_resource:mount>
-                        <cmf_resource:repository>content</cmf_resource:repository>
-                        <cmf_resource:mountpoint>/content</cmf_resource:mountpoint>
-                    </cmf_resource:mount>
-                    <cmf_resource:mount>
-                        <cmf_resource:repository>articles</cmf_resource:repository>
-                        <cmf_resource:mountpoint>/articles</cmf_resource:mountpoint>
-                    </cmf_resource:mount>
-                </cmf_resource:mounts>
-            </cmf_resource:composite>
         </cmf_resource:repository>
     </cmf_resource:config>
 </container>
