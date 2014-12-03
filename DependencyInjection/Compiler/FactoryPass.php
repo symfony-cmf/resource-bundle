@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Daniel Leech <daniel@dantleech.com>
  */
-class RepositoryPass implements CompilerPassInterface
+class FactoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

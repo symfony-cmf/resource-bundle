@@ -14,14 +14,14 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Compi
 use Prophecy\PhpUnit\ProphecyTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RepositoryPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\FactoryPass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class CompilerPassTest extends AbstractCompilerPassTestCase
+class FactoryPassTest extends AbstractCompilerPassTestCase
 {
     protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RepositoryPass());
+        $container->addCompilerPass(new FactoryPass());
     }
 
     public function testCompilerPass()

@@ -18,66 +18,68 @@ use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RepositoryPas
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Configuration;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
-class ConfigurationTest extends AbstractExtensionConfigurationTestCase
+class CmfResourceExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtension()
+    protected function getContainerExtensions()
     {
-        return new CmfResourceExtension();
+        return array(new CmfResourceExtension());
     }
 
-    protected function getConfiguration()
-    {
-        return new Configuration();
-    }
-
-    public function provideConfig()
+    public function provideExtension()
     {
         return array(
-            array(__DIR__ . '/fixtures/config.xml'),
-            array(__DIR__ . '/fixtures/config.yml'),
+            array(
+                array(
+                    'repository' => array(
+                        'doctrine_phpcr_odm' => array(
+                            'foobar' => array(
+                                'basepath' => '/cmf/foo',
+                            ),
+                        ),
+                        'doctrine_phpcr' => array(
+                            'foobar' => array(
+                                'basepath' => '/cmf/foo',
+                            ),
+                        ),
+                        'composite' => array(
+                            'unified' => array(
+                                'mounts' => array(
+                                    array(
+                                        'repository' => 'foobar',
+                                        'mountpoint' => '/foobar',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    )
+                ),
+                array(
+                    'cmf_resource.repository.doctrine_phpcr_odm.foobar',
+                    'cmf_resource.repository.doctrine_phpcr.foobar',
+                    'cmf_resource.repository.composite.unified',
+                )
+            ),
+            array(
+                array(
+                ),
+                array(),
+            ),
         );
     }
 
-
     /**
-     * @dataProvider provideConfig
+     * @dataProvider provideExtension
      */
-    public function testConfig($source)
+    public function testExtension($config, $expectedServiceIds)
     {
-        $this->assertProcessedConfigurationEquals(array(
-            'repository' => array(
-                'doctrine_phpcr_odm' => array(
-                    array(
-                        'name' => 'content',
-                        'basepath' => '/cmf/content',
-                    ),
-                    array(
-                        'name' => 'articles',
-                        'basepath' => '/cmf/articles',
-                    ),
-                ),
-                'doctrine_phpcr' => array(),
-                'composite' => array(
-                    array(
-                        'name' => 'stuff',
-                        'mounts' => array(
-                            array(
-                                'repository' => 'content',
-                                'mountpoint' => '/content',
-                            ),
-                            array(
-                                'repository' => 'articles',
-                                'mountpoint' => '/articles',
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        ), array($source));
+        $this->load($config);
+
+        foreach ($expectedServiceIds as $expectedServiceId) {
+            $this->assertContainerBuilderHasService($expectedServiceId);
+        }
     }
 }
-
 
