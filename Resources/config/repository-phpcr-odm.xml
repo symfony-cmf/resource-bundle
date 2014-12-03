@@ -15,12 +15,5 @@
             <argument type="service" id="cmf_resource.finder.selector.parser" />
         </service>
 
-        <service id="cmf_resource.repository.phpcr_odm" class="%cmf_resource.repository.phpcr_odm.class%">
-            <argument type="service" id="doctrine_phpcr"/>
-            <argument>%cmf_resource.persistence.phpcr.route_basepath%</argument>
-            <tag name="cmf_resource.repository" />
-        </service>
-
     </services>
 </container>
-

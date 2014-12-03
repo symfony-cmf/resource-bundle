@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\Definition;
@@ -58,4 +57,3 @@ class CompositeRepositoryPassTest extends AbstractCompilerPassTestCase
         $this->assertEquals('cmf_resource.repository.test_repository', (string) $mountMethod2[1][1]);
     }
 }
-

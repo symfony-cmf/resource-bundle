@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Daniel Leech <daniel@dantleech.com>
@@ -23,13 +22,13 @@ class FactoryPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(
-            'cmf_resource.repository.factory.container'
+            'cmf_resource.factory.container'
         )) {
             return;
         }
 
         $repositoryFactory = $container->getDefinition(
-            'cmf_resource.repository.factory.container'
+            'cmf_resource.factory.container'
         );
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository');

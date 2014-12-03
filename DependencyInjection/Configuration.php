@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;

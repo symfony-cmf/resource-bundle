@@ -9,17 +9,19 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\ResourceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\FactoryPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\CompositeRepositoryPass;
 
 class CmfResourceBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new FactoryPass());
+        $container->addCompilerPass(new CompositeRepositoryPass());
         parent::build($container);
     }
 

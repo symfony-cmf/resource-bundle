@@ -11,14 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RepositoryPass;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Configuration;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 class CmfResourceExtensionTest extends AbstractExtensionTestCase
@@ -82,4 +75,3 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
         }
     }
 }
-

@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\FactoryPass;
@@ -31,15 +30,16 @@ class FactoryPassTest extends AbstractCompilerPassTestCase
             new Definition(),
             array()
         ));
-        $this->setDefinition('cmf_resource.repository.factory.container', $factoryDefinition);
+        $this->setDefinition('cmf_resource.factory.container', $factoryDefinition);
 
         $repositoryDefinition = new Definition();
         $repositoryDefinition->addTag('cmf_resource.repository', array('name' => 'test_repository'));
         $this->setDefinition('cmf_resource.repository.test', $repositoryDefinition);
+
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'cmf_resource.repository.factory.container',
+            'cmf_resource.factory.container',
             1,
             array(
                 'test_repository' => 'cmf_resource.repository.test'
@@ -47,4 +47,3 @@ class FactoryPassTest extends AbstractCompilerPassTestCase
         );
     }
 }
-

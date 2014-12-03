@@ -1,8 +1,8 @@
 cmf_resource:
     repository:
         doctrine_phpcr_odm:
-            content:
-                basepath: /cmf/content
+            test_repository:
+                basepath: /test
             articles:
                 basepath: /cmf/articles
 
@@ -10,8 +10,8 @@ cmf_resource:
             stuff:
                 mounts:
                     -
-                        repository: content
-                        path: /content
+                        repository: test_repository
+                        mountpoint: /content
                     -
                         repository: articles
-                        path: /articles
+                        mountpoint: /articles
