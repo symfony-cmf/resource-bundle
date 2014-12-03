@@ -24,8 +24,7 @@
         "phpspec/prophecy-phpunit": "~1.0.0",
         "matthiasnoback/symfony-dependency-injection-test": "0.*",
         "matthiasnoback/symfony-config-test": "0.*",
-        "doctrine/phpcr-odm": "~1.2",
-        "jackalope/jackalope-fs": "dev-master"
+        "doctrine/phpcr-odm": "~1.2"
     },
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
