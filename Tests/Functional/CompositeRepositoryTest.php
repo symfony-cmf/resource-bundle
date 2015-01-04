@@ -14,35 +14,13 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-class PhpcrOdmRepositoryTest extends RepositoryTestCase
+class CompositeRepositoryTest extends RepositoryTestCase
 {
-    public function setUp()
-    {
-        $this->dm = $this->db('PHPCR')->getOm();
-
-        $this->db('PHPCR')->purgeRepository(true);
-        $this->db('PHPCR')->createTestNode();
-
-        $rootDocument =  $this->dm->find(null, '/test');
-        $document = new Generic();
-        $document->setNodeName('foo');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
-
-        $document = new Generic();
-        $document->setNodeName('bar');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
-        $this->dm->flush();
-
-        $this->repositoryFactory = $this->container->get('cmf_resource.factory');
-    }
-
     public function provideGet()
     {
         return array(
-            array('/foo', 'foo'),
-            array('/bar', 'bar'),
+            array('/content/foo', 'foo'),
+            array('/content/bar', 'bar'),
         );
     }
 
@@ -51,7 +29,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryGet($path, $expectedName)
     {
-        $repository = $this->repositoryFactory->create('test_repository');
+        $repository = $this->repositoryFactory->create('stuff');
         $res = $repository->get($path);
         $this->assertNotNull($res);
         $document = $res->getDocument();
@@ -62,7 +40,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
     public function provideFind()
     {
         return array(
-            array('/*', 2)
+            array('/content/*', 2)
         );
     }
 
@@ -71,7 +49,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryFind($pattern, $nbResults)
     {
-        $repository = $this->repositoryFactory->create('test_repository');
+        $repository = $this->repositoryFactory->create('stuff');
         $res = $repository->find($pattern);
         $this->assertCount($nbResults, $res);
     }

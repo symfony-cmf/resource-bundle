@@ -14,8 +14,10 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-class PhpcrOdmRepositoryTest extends RepositoryTestCase
+class RepositoryTestCase extends BaseTestCase
 {
+    protected $dm;
+
     public function setUp()
     {
         $this->dm = $this->db('PHPCR')->getOm();
@@ -36,43 +38,5 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
         $this->dm->flush();
 
         $this->repositoryFactory = $this->container->get('cmf_resource.factory');
-    }
-
-    public function provideGet()
-    {
-        return array(
-            array('/foo', 'foo'),
-            array('/bar', 'bar'),
-        );
-    }
-
-    /**
-     * @dataProvider provideGet
-     */
-    public function testRepositoryGet($path, $expectedName)
-    {
-        $repository = $this->repositoryFactory->create('test_repository');
-        $res = $repository->get($path);
-        $this->assertNotNull($res);
-        $document = $res->getDocument();
-
-        $this->assertEquals($expectedName, $document->getNodeName());
-    }
-
-    public function provideFind()
-    {
-        return array(
-            array('/*', 2)
-        );
-    }
-
-    /**
-     * @dataProvider provideFind
-     */
-    public function testRepositoryFind($pattern, $nbResults)
-    {
-        $repository = $this->repositoryFactory->create('test_repository');
-        $res = $repository->find($pattern);
-        $this->assertCount($nbResults, $res);
     }
 }
