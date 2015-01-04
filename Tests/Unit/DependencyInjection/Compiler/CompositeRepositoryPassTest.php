@@ -28,17 +28,17 @@ class CompositeRepositoryPassTest extends AbstractCompilerPassTestCase
         $repo = new Definition();
         $repo->addTag('cmf_resource.repository', array(
             'type' => 'doctrine_phpcr_odm',
-            'name' => 'repository_alias'
+            'name' => 'repository_alias',
         ));
 
         $this->setDefinition('cmf_resource.repository.test_repository', $repo);
 
         $compRepo = new Definition();
-        $compRepo->addMethodCall('mount', array('/cmf/foobar', 'some_service_id'));;
-        $compRepo->addMethodCall('mount', array('/cmf/barbar', 'repository_alias'));;
+        $compRepo->addMethodCall('mount', array('/cmf/foobar', 'some_service_id'));
+        $compRepo->addMethodCall('mount', array('/cmf/barbar', 'repository_alias'));
         $compRepo->addTag('cmf_resource.repository', array(
             'type' => 'composite',
-            'name' => 'foobar'
+            'name' => 'foobar',
         ));
 
         $this->setDefinition('cmf_resource.repository.test_composite', $compRepo);

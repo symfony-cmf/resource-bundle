@@ -28,7 +28,7 @@ class FactoryPassTest extends AbstractCompilerPassTestCase
         $factoryDefinition = new Definition();
         $factoryDefinition->setArguments(array(
             new Definition(),
-            array()
+            array(),
         ));
         $this->setDefinition('cmf_resource.factory.container', $factoryDefinition);
 
@@ -42,7 +42,7 @@ class FactoryPassTest extends AbstractCompilerPassTestCase
             'cmf_resource.factory.container',
             1,
             array(
-                'test_repository' => 'cmf_resource.repository.test'
+                'test_repository' => 'cmf_resource.repository.test',
             )
         );
     }

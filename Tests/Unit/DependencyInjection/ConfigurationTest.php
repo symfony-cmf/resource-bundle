@@ -65,7 +65,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ),
                     ),
                 ),
-            )
+            ),
         ), array($source));
     }
 }

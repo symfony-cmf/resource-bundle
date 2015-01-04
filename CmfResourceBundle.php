@@ -24,5 +24,4 @@ class CmfResourceBundle extends Bundle
         $container->addCompilerPass(new CompositeRepositoryPass());
         parent::build($container);
     }
-
 }

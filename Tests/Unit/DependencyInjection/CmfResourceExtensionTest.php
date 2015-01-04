@@ -47,13 +47,13 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
                                 ),
                             ),
                         ),
-                    )
+                    ),
                 ),
                 array(
                     'cmf_resource.repository.doctrine_phpcr_odm.foobar',
                     'cmf_resource.repository.doctrine_phpcr.foobar',
                     'cmf_resource.repository.composite.unified',
-                )
+                ),
             ),
             array(
                 array(

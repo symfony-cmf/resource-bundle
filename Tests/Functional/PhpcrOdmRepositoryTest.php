@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
 class PhpcrOdmRepositoryTest extends RepositoryTestCase
@@ -62,7 +61,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
     public function provideFind()
     {
         return array(
-            array('/*', 2)
+            array('/*', 2),
         );
     }
 
