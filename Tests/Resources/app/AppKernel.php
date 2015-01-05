@@ -8,7 +8,7 @@ class AppKernel extends TestKernel
     public function configure()
     {
         $this->requireBundleSets(array(
-            'default'
+            'default', 'phpcr_odm',
         ));
 
         $this->addBundles(array(
