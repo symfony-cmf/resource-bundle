@@ -51,7 +51,7 @@ class CmfResourceExtension extends Extension
             }
         }
 
-        $container->setAlias('cmf_resource.factory', 'cmf_resource.factory.container');
+        $container->setAlias('cmf_resource.registry', 'cmf_resource.registry.container');
     }
 
     private function createDoctrinePhpcrOdmRepository($config)

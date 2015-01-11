@@ -13,24 +13,24 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Compi
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\FactoryPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RegistryPass;
 use Symfony\Component\DependencyInjection\Definition;
 
-class FactoryPassTest extends AbstractCompilerPassTestCase
+class RegistryPassTest extends AbstractCompilerPassTestCase
 {
     protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new FactoryPass());
+        $container->addCompilerPass(new RegistryPass());
     }
 
     public function testCompilerPass()
     {
-        $factoryDefinition = new Definition();
-        $factoryDefinition->setArguments(array(
+        $registryDefinition = new Definition();
+        $registryDefinition->setArguments(array(
             new Definition(),
             array(),
         ));
-        $this->setDefinition('cmf_resource.factory.container', $factoryDefinition);
+        $this->setDefinition('cmf_resource.registry.container', $registryDefinition);
 
         $repositoryDefinition = new Definition();
         $repositoryDefinition->addTag('cmf_resource.repository', array('name' => 'test_repository'));
@@ -39,7 +39,7 @@ class FactoryPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'cmf_resource.factory.container',
+            'cmf_resource.registry.container',
             1,
             array(
                 'test_repository' => 'cmf_resource.repository.test',

@@ -37,6 +37,6 @@ class RepositoryTestCase extends BaseTestCase
         $this->dm->persist($document);
         $this->dm->flush();
 
-        $this->repositoryFactory = $this->container->get('cmf_resource.factory');
+        $this->repositoryRegistry = $this->container->get('cmf_resource.registry');
     }
 }
