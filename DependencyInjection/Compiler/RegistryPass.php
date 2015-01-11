@@ -17,18 +17,18 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 /**
  * @author Daniel Leech <daniel@dantleech.com>
  */
-class FactoryPass implements CompilerPassInterface
+class RegistryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(
-            'cmf_resource.factory.container'
+            'cmf_resource.registry.container'
         )) {
             return;
         }
 
-        $repositoryFactory = $container->getDefinition(
-            'cmf_resource.factory.container'
+        $repositoryRegistry = $container->getDefinition(
+            'cmf_resource.registry.container'
         );
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository');
@@ -45,6 +45,6 @@ class FactoryPass implements CompilerPassInterface
             $map[$attributes[0]['name']] = $id;
         }
 
-        $repositoryFactory->replaceArgument(1, $map);
+        $repositoryRegistry->replaceArgument(1, $map);
     }
 }

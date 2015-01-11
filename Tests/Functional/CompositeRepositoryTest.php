@@ -27,7 +27,7 @@ class CompositeRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryGet($path, $expectedName)
     {
-        $repository = $this->repositoryFactory->create('stuff');
+        $repository = $this->repositoryRegistry->get('stuff');
         $res = $repository->get($path);
         $this->assertNotNull($res);
         $document = $res->getDocument();
@@ -47,7 +47,7 @@ class CompositeRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryFind($pattern, $nbResults)
     {
-        $repository = $this->repositoryFactory->create('stuff');
+        $repository = $this->repositoryRegistry->get('stuff');
         $res = $repository->find($pattern);
         $this->assertCount($nbResults, $res);
     }

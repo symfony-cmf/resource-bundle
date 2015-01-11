@@ -17,7 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "symfony-cmf/resource": "dev-master"
+        "symfony-cmf/resource": "~1.0"
     },
     "require-dev": {
         "symfony-cmf/testing": "~1.1",

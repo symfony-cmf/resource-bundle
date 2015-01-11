@@ -34,7 +34,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
         $this->dm->persist($document);
         $this->dm->flush();
 
-        $this->repositoryFactory = $this->container->get('cmf_resource.factory');
+        $this->repositoryRegistry = $this->container->get('cmf_resource.registry');
     }
 
     public function provideGet()
@@ -50,7 +50,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryGet($path, $expectedName)
     {
-        $repository = $this->repositoryFactory->create('test_repository');
+        $repository = $this->repositoryRegistry->get('test_repository');
         $res = $repository->get($path);
         $this->assertNotNull($res);
         $document = $res->getDocument();
@@ -70,7 +70,7 @@ class PhpcrOdmRepositoryTest extends RepositoryTestCase
      */
     public function testRepositoryFind($pattern, $nbResults)
     {
-        $repository = $this->repositoryFactory->create('test_repository');
+        $repository = $this->repositoryRegistry->get('test_repository');
         $res = $repository->find($pattern);
         $this->assertCount($nbResults, $res);
     }
