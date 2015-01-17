@@ -65,7 +65,7 @@ class CmfResourceExtension extends Extension
 
     private function createDoctrinePhpcrRepository($config)
     {
-        $definition = new Definition('Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository');
+        $definition = new Definition('Symfony\Cmf\Component\Resource\Repository\PhpcrRepository');
         $definition->addArgument(new Reference('doctrine_phpcr.session'));
         $definition->addArgument($config['basepath']);
 

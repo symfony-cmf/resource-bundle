@@ -14,6 +14,8 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
+use Puli\Repository\Api\Resource\Resource;
+use Puli\Repository\Api\ResourceRepository;
 
 /**
  * Registry which acts as a proxy to the Symfony DI container
@@ -57,11 +59,29 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     {
         if (!isset($this->repositoryServiceMap[$name])) {
             throw new \InvalidArgumentException(sprintf(
-                'No repository with name "%s" has been registered',
-                $name
+                'No repository with name "%s" has been registered, registered names: "%s"',
+                $name,
+                implode('", "', array_keys($this->repositoryServiceMap))
             ));
         }
 
         return $this->repositoryServiceMap[$name];
+    }
+
+    public function getName(ResourceRepository $resourceRepository)
+    {
+        foreach ($this->repositoryServiceMap as $name => $serviceId) {
+            $repository = $this->container->get($serviceId);
+
+            if ($repository === $resourceRepository) {
+                return $name;
+            }
+        }
+
+        throw new \RuntimeException(sprintf(
+            'Could not determine registration name for repository of type "%s".' .
+            'No matching repository exists in the registry',
+            get_class($resourceRepository)
+        ));
     }
 }
