@@ -59,7 +59,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     {
         if (!isset($this->repositoryServiceMap[$name])) {
             throw new \InvalidArgumentException(sprintf(
-                'No repository with name "%s" has been registered, registered names: "%s"',
+                'Repository with name "%s" has not been registered, registered names: "%s"',
                 $name,
                 implode('", "', array_keys($this->repositoryServiceMap))
             ));
