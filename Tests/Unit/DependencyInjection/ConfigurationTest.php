@@ -51,6 +51,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     ),
                 ),
                 'doctrine_phpcr' => array(),
+                'filesystem' => array(),
                 'composite' => array(
                     'stuff' => array(
                         'mounts' => array(

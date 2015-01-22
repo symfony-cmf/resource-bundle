@@ -43,6 +43,7 @@ class CmfResourceExtension extends Extension
             'composite' => 'createCompositeRepository',
             'doctrine_phpcr' => 'createDoctrinePhpcrRepository',
             'doctrine_phpcr_odm' => 'createDoctrinePhpcrOdmRepository',
+            'filesystem' => 'createFilesystemRepository',
         ) as $type => $createMethod) {
             foreach ($config[$type] as $repoName => $repoConfig) {
                 $definition = $this->$createMethod($repoConfig);
@@ -79,6 +80,14 @@ class CmfResourceExtension extends Extension
         foreach ($config['mounts'] as $mount) {
             $definition->addMethodCall('mount', array($mount['mountpoint'], $mount['repository']));
         }
+
+        return $definition;
+    }
+
+    private function createFilesystemRepository($config)
+    {
+        $definition = new Definition('Puli\Repository\FilesystemRepository');
+        $definition->setArguments(array($config['base_dir'], $config['symlink']));
 
         return $definition;
     }

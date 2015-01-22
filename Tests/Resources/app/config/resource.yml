@@ -6,6 +6,10 @@ cmf_resource:
             articles:
                 basepath: /cmf/articles
 
+        filesystem:
+            my_filesystem:
+                base_dir: %kernel.root_dir%/../filesystem
+
         composite:
             stuff:
                 mounts:

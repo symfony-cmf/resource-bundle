@@ -12,7 +12,7 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
 
-class CompositeRepositoryTest extends RepositoryTestCase
+class CompositeRepositoryTest extends PhpcrRepositoryTestCase
 {
     public function provideGet()
     {
