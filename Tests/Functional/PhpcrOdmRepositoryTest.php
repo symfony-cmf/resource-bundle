@@ -42,6 +42,7 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
         return array(
             array('/foo', 'foo'),
             array('/bar', 'bar'),
+            array('/', 'test'),
         );
     }
 
@@ -62,6 +63,7 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
     {
         return array(
             array('/*', 2),
+            array('/', 1),
         );
     }
 
