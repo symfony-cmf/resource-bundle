@@ -14,7 +14,7 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-class RepositoryTestCase extends BaseTestCase
+class PhpcrRepositoryTestCase extends BaseTestCase
 {
     protected $dm;
 

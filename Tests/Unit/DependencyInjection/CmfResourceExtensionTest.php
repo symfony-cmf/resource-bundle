@@ -37,6 +37,11 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
                                 'basepath' => '/cmf/foo',
                             ),
                         ),
+                        'filesystem' => array(
+                            'foobar_filesystem' => array(
+                                'base_dir' => '/assets',
+                            ),
+                        ),
                         'composite' => array(
                             'unified' => array(
                                 'mounts' => array(
@@ -53,6 +58,7 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
                     'cmf_resource.repository.doctrine_phpcr_odm.foobar',
                     'cmf_resource.repository.doctrine_phpcr.foobar',
                     'cmf_resource.repository.composite.unified',
+                    'cmf_resource.repository.filesystem.foobar_filesystem',
                 ),
             ),
             array(

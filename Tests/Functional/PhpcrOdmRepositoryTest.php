@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-class PhpcrOdmRepositoryTest extends RepositoryTestCase
+class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 {
     public function setUp()
     {
