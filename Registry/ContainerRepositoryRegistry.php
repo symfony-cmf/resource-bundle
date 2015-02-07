@@ -27,7 +27,12 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     /**
      * @var array
      */
-    private $repositoryServiceMap = array();
+    private $serviceMap = array();
+
+    /**
+     * @var array
+     */
+    private $typeMap;
 
     /**
      * @var ContainerInterface
@@ -35,46 +40,40 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     private $container;
 
     /**
-     * @param array repositoryServiceMap
+     * @var array
      */
-    public function __construct(ContainerInterface $container, $repositoryServiceMap = array())
+    private $repositoryTypes = array();
+
+    /**
+     * @param ContainerInterface $container
+     * @param array $serviceMap
+     * @param array $typeMap
+     */
+    public function __construct(ContainerInterface $container, $serviceMap = array(), $typeMap = array())
     {
-        $this->repositoryServiceMap = $repositoryServiceMap;
+        $this->serviceMap = $serviceMap;
         $this->container = $container;
+        $this->typeMap = $typeMap;
     }
 
     /**
-     * Return a new instance of the named repository
-     *
-     * @param string $name
-     *
-     * @return Puli\Resource\RepositoryInterface
+     * {@inheritDoc}
      */
-    public function get($repositoryName)
+    public function get($repositoryAlias)
     {
-        return $this->container->get($this->getRepositoryServiceId($repositoryName));
+        return $this->container->get($this->getRepositoryServiceId($repositoryAlias));
     }
 
-    private function getRepositoryServiceId($name)
+    /**
+     * {@inheritDoc}
+     */
+    public function getRepositoryAlias(ResourceRepository $resourceRepository)
     {
-        if (!isset($this->repositoryServiceMap[$name])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Repository with name "%s" has not been registered, registered names: "%s"',
-                $name,
-                implode('", "', array_keys($this->repositoryServiceMap))
-            ));
-        }
-
-        return $this->repositoryServiceMap[$name];
-    }
-
-    public function getName(ResourceRepository $resourceRepository)
-    {
-        foreach ($this->repositoryServiceMap as $name => $serviceId) {
+        foreach ($this->serviceMap as $alias => $serviceId) {
             $repository = $this->container->get($serviceId);
 
             if ($repository === $resourceRepository) {
-                return $name;
+                return $alias;
             }
         }
 
@@ -83,5 +82,43 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
             'No matching repository exists in the registry',
             get_class($resourceRepository)
         ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRepositoryType(ResourceRepository $resourceRepository)
+    {
+        $class = get_class($resourceRepository);
+        $typeMap = array_flip($this->typeMap);
+
+        if (!isset($typeMap[$class])) {
+            throw new \RuntimeException(sprintf(
+                'Type for repository class "%s" is not registered, known classes: "%s"',
+                $class,
+                implode('", "', $this->typeMap)
+            ));
+        }
+
+        return $typeMap[$class];
+    }
+
+    /**
+     * Return the service ID for the given repository alias
+     *
+     * @param string $alias
+     * @return string
+     */
+    private function getRepositoryServiceId($alias)
+    {
+        if (!isset($this->serviceMap[$alias])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Repository with alias "%s" has not been registered, registered aliass: "%s"',
+                $alias,
+                implode('", "', array_keys($this->serviceMap))
+            ));
+        }
+
+        return $this->serviceMap[$alias];
     }
 }

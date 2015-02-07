@@ -54,7 +54,7 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
         $repository = $this->repositoryRegistry->get('test_repository');
         $res = $repository->get($path);
         $this->assertNotNull($res);
-        $document = $res->getDocument();
+        $document = $res->getPayload();
 
         $this->assertEquals($expectedName, $document->getNodeName());
     }

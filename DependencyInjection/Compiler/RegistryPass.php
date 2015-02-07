@@ -33,18 +33,26 @@ class RegistryPass implements CompilerPassInterface
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository');
         $map = array();
+        $types = array();
 
         foreach ($ids as $id => $attributes) {
-            if (!isset($attributes[0]['name'])) {
-                throw new \InvalidArgumentException(sprintf(
-                    'No "name" attribute specified for repository service definition tag: "%s"',
-                    $id
-                ));
+            foreach (array('alias', 'type') as $requiredKey) {
+                if (!isset($attributes[0][$requiredKey])) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'No "%s" attribute specified for repository service definition tag: "%s"',
+                        $requiredKey,
+                        $id
+                    ));
+                }
             }
 
-            $map[$attributes[0]['name']] = $id;
+            $map[$attributes[0]['alias']] = $id;
+            $types[$attributes[0]['type']] = $container->getParameterBag()->resolveValue(
+                $container->getDefinition($id)->getClass()
+            );
         }
 
         $repositoryRegistry->replaceArgument(1, $map);
+        $repositoryRegistry->replaceArgument(2, $types);
     }
 }

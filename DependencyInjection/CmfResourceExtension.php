@@ -45,10 +45,10 @@ class CmfResourceExtension extends Extension
             'doctrine_phpcr_odm' => 'createDoctrinePhpcrOdmRepository',
             'filesystem' => 'createFilesystemRepository',
         ) as $type => $createMethod) {
-            foreach ($config[$type] as $repoName => $repoConfig) {
+            foreach ($config[$type] as $repoAlias => $repoConfig) {
                 $definition = $this->$createMethod($repoConfig);
-                $definition->addTag('cmf_resource.repository', array('type' => $type, 'name' => $repoName));
-                $container->setDefinition('cmf_resource.repository.' . $type . '.' . $repoName, $definition);
+                $definition->addTag('cmf_resource.repository', array('type' => $type, 'alias' => $repoAlias));
+                $container->setDefinition('cmf_resource.repository.' . $type . '.' . $repoAlias, $definition);
             }
         }
 
