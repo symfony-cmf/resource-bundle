@@ -29,11 +29,15 @@ class RegistryPassTest extends AbstractCompilerPassTestCase
         $registryDefinition->setArguments(array(
             new Definition(),
             array(),
+            array(),
         ));
         $this->setDefinition('cmf_resource.registry.container', $registryDefinition);
 
-        $repositoryDefinition = new Definition();
-        $repositoryDefinition->addTag('cmf_resource.repository', array('name' => 'test_repository'));
+        $repositoryDefinition = new Definition('ThisIsClass');
+        $repositoryDefinition->addTag('cmf_resource.repository', array(
+            'alias' => 'test_repository',
+            'type' => 'foobar',
+        ));
         $this->setDefinition('cmf_resource.repository.test', $repositoryDefinition);
 
         $this->compile();
@@ -43,6 +47,9 @@ class RegistryPassTest extends AbstractCompilerPassTestCase
             1,
             array(
                 'test_repository' => 'cmf_resource.repository.test',
+            ),
+            array(
+                'foobar' => 'ThisIsClass',
             )
         );
     }

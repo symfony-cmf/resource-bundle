@@ -45,9 +45,9 @@ class ContainerRepositoryRegistryTest extends ProphecyTestCase
         $this->assertSame($res, $this->repo1->reveal());
     }
 
-    public function testGetName()
+    public function testGetRepositoryAlias()
     {
-        $res = $this->registry->getName($this->repo1->reveal());
+        $res = $this->registry->getRepositoryAlias($this->repo1->reveal());
         $this->assertEquals('one', $res);
     }
 }

@@ -30,7 +30,7 @@ class CompositeRepositoryTest extends PhpcrRepositoryTestCase
         $repository = $this->repositoryRegistry->get('stuff');
         $res = $repository->get($path);
         $this->assertNotNull($res);
-        $document = $res->getDocument();
+        $document = $res->getPayload();
 
         $this->assertEquals($expectedName, $document->getNodeName());
     }

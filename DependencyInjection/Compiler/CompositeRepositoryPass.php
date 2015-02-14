@@ -27,14 +27,14 @@ class CompositeRepositoryPass implements CompilerPassInterface
 
         $map = array();
         foreach ($taggedRepoIds as $id => $attributes) {
-            if (!isset($attributes[0]['name'])) {
+            if (!isset($attributes[0]['alias'])) {
                 throw new InvalidArgumentException(sprintf(
-                    'Resource Repository "%s" has no "name" attribute in its tag',
+                    'Resource Repository "%s" has no "alias" attribute in its tag',
                     $id
                 ));
             }
 
-            $name = $attributes[0]['name'];
+            $name = $attributes[0]['alias'];
             $map[$name] = $id;
         }
 
