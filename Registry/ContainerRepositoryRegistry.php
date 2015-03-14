@@ -113,7 +113,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     {
         if (!isset($this->serviceMap[$alias])) {
             throw new \InvalidArgumentException(sprintf(
-                'Repository with alias "%s" has not been registered, registered aliass: "%s"',
+                'Repository with alias "%s" has not been registered, registered aliases: "%s"',
                 $alias,
                 implode('", "', array_keys($this->serviceMap))
             ));
