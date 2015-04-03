@@ -26,24 +26,28 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
         return array(
             array(
                 array(
-                    'repository' => array(
-                        'doctrine_phpcr_odm' => array(
-                            'foobar' => array(
+                    'repositories' => array(
+                        'foobar_odm' => array(
+                            'type' => 'doctrine_phpcr_odm',
+                            'options' => array(
                                 'basepath' => '/cmf/foo',
                             ),
                         ),
-                        'doctrine_phpcr' => array(
-                            'foobar' => array(
+                        'foobar_phpcr' => array(
+                            'type' => 'doctrine_phpcr',
+                            'options' => array(
                                 'basepath' => '/cmf/foo',
                             ),
                         ),
-                        'filesystem' => array(
-                            'foobar_filesystem' => array(
+                        'foobar_filesystem' => array(
+                            'type' => 'filesystem',
+                            'options' => array(
                                 'base_dir' => '/assets',
                             ),
                         ),
-                        'composite' => array(
-                            'unified' => array(
+                        'unified' => array(
+                            'type' => 'composite',
+                            'options' => array(
                                 'mounts' => array(
                                     array(
                                         'repository' => 'foobar',
@@ -55,15 +59,14 @@ class CmfResourceExtensionTest extends AbstractExtensionTestCase
                     ),
                 ),
                 array(
-                    'cmf_resource.repository.doctrine_phpcr_odm.foobar',
-                    'cmf_resource.repository.doctrine_phpcr.foobar',
-                    'cmf_resource.repository.composite.unified',
-                    'cmf_resource.repository.filesystem.foobar_filesystem',
+                    'cmf_resource.repository.foobar_odm',
+                    'cmf_resource.repository.foobar_phpcr',
+                    'cmf_resource.repository.unified',
+                    'cmf_resource.repository.foobar_filesystem',
                 ),
             ),
             array(
-                array(
-                ),
+                array(),
                 array(),
             ),
         );

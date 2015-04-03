@@ -1,21 +1,19 @@
 cmf_resource:
-    repository:
-        doctrine_phpcr_odm:
-            test_repository:
-                basepath: /test
-            articles:
-                basepath: /cmf/articles
+    repositories:
+        test_repository:
+            type: doctrine_phpcr_odm
+            basepath: /test
 
-        filesystem:
-            my_filesystem:
-                base_dir: %kernel.root_dir%/../filesystem
+        articles:
+            type: doctrine_phpcr_odm
+            basepath: /cmf/articles
 
-        composite:
-            stuff:
-                mounts:
-                    -
-                        repository: test_repository
-                        mountpoint: /content
-                    -
-                        repository: articles
-                        mountpoint: /articles
+        my_filesystem:
+            type: filesystem
+            base_dir: %kernel.root_dir%/../filesystem
+
+        stuff:
+            type: composite
+            mounts:
+                - { repository: test_repository, mountpoint: /content }
+                - { repository: articles, mountpoint: /articles }
