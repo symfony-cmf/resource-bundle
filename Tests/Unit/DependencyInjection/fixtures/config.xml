@@ -1,19 +1,30 @@
-<container xmlns="http://symfony.com/schema/dic/services"
+<srv:container xmlns="http://cmf.symfony.com/schema/dic/cmf_resource"
+    xmlns:srv="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:cmf_resource="http://cmf.symfony.com/schema/dic/cmf_resource"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
         http://symfony.com/schema/dic/symfony http://symfony.com/schema/dic/symfony/symfony-1.0.xsd">
-    <cmf_resource:config>
-        <cmf_resource:repository>
 
-            <cmf_resource:doctrine-phpcr-odm-repository name="content" basepath="/cmf/content" />
-            <cmf_resource:doctrine-phpcr-odm-repository name="articles" basepath="/cmf/articles" />
+    <config>
+        <repository name="content" type="doctrine_phpcr_odm">
+            <option name="basepath">/cmf/content</option>
+        </repository>
 
-            <cmf_resource:composite-repository name="stuff">
-                <cmf_resource:mount repository="content" mountpoint="/content" />
-                <cmf_resource:mount repository="articles" mountpoint="/articles" />
-            </cmf_resource:composite-repository>
+        <repository name="articles" type="doctrine_phpcr_odm">
+            <option name="basepath">/cmf/articles</option>
+        </repository>
 
-        </cmf_resource:repository>
-    </cmf_resource:config>
-</container>
+        <repository name="stuff" type="composite">
+            <option name="mounts">
+                <collection>
+                    <option name="repository">content</option>
+                    <option name="mountpoint">/content</option>
+                </collection>
+
+                <collection>
+                    <option name="repository">articles</option>
+                    <option name="mountpoint">/articles</option>
+                </collection>
+            </option>
+        </repository>
+    </config>
+</srv:container>

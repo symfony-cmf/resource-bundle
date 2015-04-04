@@ -41,19 +41,22 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
     public function testConfig($source)
     {
         $this->assertProcessedConfigurationEquals(array(
-            'repository' => array(
-                'doctrine_phpcr_odm' => array(
-                    'content' => array(
+            'repositories' => array(
+                'content' => array(
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => array(
                         'basepath' => '/cmf/content',
                     ),
-                    'articles' => array(
+                ),
+                'articles' => array(
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => array(
                         'basepath' => '/cmf/articles',
                     ),
                 ),
-                'doctrine_phpcr' => array(),
-                'filesystem' => array(),
-                'composite' => array(
-                    'stuff' => array(
+                'stuff' => array(
+                    'type' => 'composite',
+                    'options' => array(
                         'mounts' => array(
                             array(
                                 'repository' => 'content',
