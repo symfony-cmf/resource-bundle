@@ -21,15 +21,11 @@ class RegistryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(
-            'cmf_resource.registry.container'
-        )) {
+        if (!$container->hasDefinition('cmf_resource.registry.container')) {
             return;
         }
 
-        $repositoryRegistry = $container->getDefinition(
-            'cmf_resource.registry.container'
-        );
+        $repositoryRegistry = $container->getDefinition('cmf_resource.registry.container');
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository');
         $map = array();
