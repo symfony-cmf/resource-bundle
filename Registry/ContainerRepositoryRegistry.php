@@ -45,21 +45,27 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     private $repositoryTypes = array();
 
     /**
+     * @var string|null
+     */
+    private $defaultRepositoryId = null;
+
+    /**
      * @param ContainerInterface $container
      * @param array $serviceMap
      * @param array $typeMap
      */
-    public function __construct(ContainerInterface $container, $serviceMap = array(), $typeMap = array())
+    public function __construct(ContainerInterface $container, $serviceMap = array(), $typeMap = array(), $defaultRepositoryId = 'cmf_resource.repository.default')
     {
         $this->serviceMap = $serviceMap;
         $this->container = $container;
         $this->typeMap = $typeMap;
+        $this->defaultRepositoryId = $defaultRepositoryId;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function get($repositoryAlias)
+    public function get($repositoryAlias = null)
     {
         return $this->container->get($this->getRepositoryServiceId($repositoryAlias));
     }
@@ -106,11 +112,16 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     /**
      * Return the service ID for the given repository alias
      *
-     * @param string $alias
+     * @param null|string $alias
+     *
      * @return string
      */
-    private function getRepositoryServiceId($alias)
+    private function getRepositoryServiceId($alias = null)
     {
+        if (null === $alias && null !== $this->defaultRepositoryId) {
+            return $this->defaultRepositoryId;
+        }
+
         if (!isset($this->serviceMap[$alias])) {
             throw new \InvalidArgumentException(sprintf(
                 'Repository with alias "%s" has not been registered, registered aliases: "%s"',

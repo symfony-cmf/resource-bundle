@@ -17,38 +17,68 @@ use Prophecy\Argument;
 
 class ContainerRepositoryRegistryTest extends ProphecyTestCase
 {
+    private $container;
+    private $repo;
+    private $registry;
+
     public function setUp()
     {
         $this->container = $this->prophesize('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->repo1 = $this->prophesize('Puli\Repository\Api\ResourceRepository');
-        $this->repo2 = $this->prophesize('Puli\Repository\Api\ResourceRepository');
+        $this->repo = $this->prophesize('Puli\Repository\Api\ResourceRepository');
         $serviceMap = array(
             'one' => 'repo1_service',
             'two' => 'repo2_service',
         );
-
-        $containerMap = array(
-            'repo1_service' => $this->repo1->reveal(),
-            'repo2_service' => $this->repo2->reveal(),
-        );
-        $this->container->get(Argument::any())->will(function ($args) use ($containerMap) {
-            $name = array_shift($args);
-            return $containerMap[$name];
-        });
 
         $this->registry = new ContainerRepositoryRegistry($this->container->reveal(), $serviceMap);
     }
 
     public function testGet()
     {
-        $res = $this->registry->get('one');
-        $this->assertSame($res, $this->repo1->reveal());
+        $repo = $this->repo->reveal();
+        $this->container->get('repo1_service')->willReturn($repo);
+
+        $this->assertEquals($repo, $this->registry->get('one'));
+    }
+
+    public function provideGetDefaultRepository()
+    {
+        return array(
+            'normal behaviour' => array(),
+            'overriden default id' => array('the_default'),
+            'no default service' => array(null, false),
+        );
+    }
+
+    /**
+     * @dataProvider provideGetDefaultRepository
+     */
+    public function testGetDefaultRepository($defaultId = false, $shouldBeCalled = true)
+    {
+        if ($shouldBeCalled) {
+            $this->container
+                ->get(false === $defaultId ? 'cmf_resource.repository.default' : $defaultId)
+                ->shouldBeCalled();
+        }
+
+        if (false !== $defaultId) {
+            $registry = new ContainerRepositoryRegistry($this->container->reveal(), array(), array(), 'the_default');
+        } else {
+            $registry = new ContainerRepositoryRegistry($this->container->reveal());
+        }
+
+        $registry->get();
     }
 
     public function testGetRepositoryAlias()
     {
-        $res = $this->registry->getRepositoryAlias($this->repo1->reveal());
-        $this->assertEquals('one', $res);
+        $repo1 = $this->repo->reveal();
+        $repo2 = $this->prophesize('Puli\Repository\Api\ResourceRepository')->reveal();
+
+        $this->container->get('repo1_service')->willReturn($repo1);
+        $this->container->get('repo2_service')->willReturn($repo2);
+
+        $this->assertEquals('one', $this->registry->getRepositoryAlias($repo1));
     }
 }
 
