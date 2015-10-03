@@ -11,11 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Symfony\Cmf\Bundle\ResourceBundle\Registry\ContainerRepositoryRegistry;
 use Prophecy\Argument;
 
-class ContainerRepositoryRegistryTest extends ProphecyTestCase
+class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 {
     private $container;
     private $repo;
