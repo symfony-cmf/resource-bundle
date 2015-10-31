@@ -36,6 +36,10 @@ class CmfResourceExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         $this->loadRepositories($config['repositories'], $container);
+
+        if ($this->isConfigEnabled($container, $config['discovery'])) {
+            $this->loadDiscovery($config['discovery'], $container, $loader);
+        }
     }
 
     private function loadRepositories(array $repositories, ContainerBuilder $container)
@@ -62,6 +66,19 @@ class CmfResourceExtension extends Extension
         }
 
         $container->setAlias('cmf_resource.registry', 'cmf_resource.registry.container');
+    }
+
+    private function loadDiscovery(array $discovery, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        if (!class_exists('Puli\Discovery\Api\Discovery')) {
+            throw new InvalidConfigurationException(
+                'The puli/discovery package must be installed when enabling discovery. The package is not found.'
+            );
+        }
+
+        $loader->load('discovery.xml');
+
+        $container->setParameter('cmf_resource.discovery.bindings', $discovery['bindings']);
     }
 
     private function createDoctrinePhpcrOdmRepository(array $options, $alias)
@@ -104,7 +121,7 @@ class CmfResourceExtension extends Extension
             throw new InvalidConfigurationException('The composite repository type requires a "mounts" option to be set.');
         }
 
-        $definition = new Definition('Puli\Repository\CompositeRepository');
+        $definition = new Definition('Symfony\Cmf\Component\Resource\Repository\CompositeRepository');
 
         foreach ($options['mounts'] as $mount) {
             if (!isset($mount['mountpoint']) || !isset($mount['repository'])) {
