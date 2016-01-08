@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 class Configuration implements ConfigurationInterface
@@ -24,7 +25,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('cmf_resource')
+        $root = $treeBuilder->root('cmf_resource');
+
+        $this->addRepositoriesSection($root);
+        $this->addDiscoverySection($root);
+
+        return $treeBuilder;
+    }
+
+    public function addRepositoriesSection(ArrayNodeDefinition $root)
+    {
+        $root
             ->fixXmlConfig('repository', 'repositories')
             ->children()
                 ->arrayNode('repositories')
@@ -89,7 +100,30 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end() // repositories
             ->end();
+    }
 
-        return $treeBuilder;
+    public function addDiscoverySection(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('discovery')
+                    ->canBeEnabled()
+                    ->fixXmlConfig('type')
+                    ->fixXmlConfig('binding')
+                    ->children()
+                        ->arrayNode('types')
+                            ->prototype('scalar')->end()
+                        ->end() // types
+                        ->arrayNode('bindings')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->end()
+                                    ->scalarNode('type')->isRequired()->end()
+                                ->end()
+                            ->end()
+                        ->end() // bindings
+                    ->end()
+                ->end() // discovery
+            ->end();
     }
 }

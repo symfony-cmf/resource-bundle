@@ -18,5 +18,7 @@
             <argument type="collection" />
         </service>
 
+        <service id="cmf_resource.repository" alias="cmf_resource.repository.default"/>
+
     </services>
 </container>
