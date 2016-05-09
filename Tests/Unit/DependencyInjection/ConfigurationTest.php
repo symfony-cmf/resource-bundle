@@ -13,63 +13,76 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Configuration;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class ConfigurationTest extends AbstractExtensionConfigurationTestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-    protected function getContainerExtension()
+    private $container;
+
+    public function setUp()
     {
-        return new CmfResourceExtension();
+        $extension = new CmfResourceExtension();
+        $this->container = new ContainerBuilder();
+        $this->container->registerExtension($extension);
     }
 
-    protected function getConfiguration()
+    public function testXmlConfig()
     {
-        return new Configuration();
+        $loader = new XmlFileLoader($this->container, new FileLocator());
+        $loader->load(__DIR__.'/fixtures/config.xml');
+        $this->assertConfig(
+            $this->container->getExtensionConfig('cmf_resource')
+        );
     }
 
-    public function provideConfig()
+    public function testYmlConfig()
     {
-        return [
-            [__DIR__.'/fixtures/config.xml'],
-            [__DIR__.'/fixtures/config.yml'],
-        ];
+        $loader = new YamlFileLoader($this->container, new FileLocator());
+        $loader->load(__DIR__.'/fixtures/config.yml');
+        $this->assertConfig(
+            $this->container->getExtensionConfig('cmf_resource')
+        );
     }
 
-    /**
-     * @dataProvider provideConfig
-     */
-    public function testConfig($source)
+    public function assertConfig($source)
     {
-        $this->assertProcessedConfigurationEquals([
-            'repositories' => [
-                'content' => [
-                    'type' => 'doctrine_phpcr_odm',
-                    'options' => [
-                        'basepath' => '/cmf/content',
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), $source);
+        $this->assertEquals([
+                'repositories' => [
+                    'content' => [
+                        'type' => 'doctrine_phpcr_odm',
+                        'options' => [
+                            'basepath' => '/cmf/content',
+                        ],
                     ],
-                ],
-                'articles' => [
-                    'type' => 'doctrine_phpcr_odm',
-                    'options' => [
-                        'basepath' => '/cmf/articles',
+                    'articles' => [
+                        'type' => 'doctrine_phpcr_odm',
+                        'options' => [
+                            'basepath' => '/cmf/articles',
+                        ],
                     ],
-                ],
-                'stuff' => [
-                    'type' => 'composite',
-                    'options' => [
-                        'mounts' => [
-                            [
-                                'repository' => 'content',
-                                'mountpoint' => '/content',
-                            ],
-                            [
-                                'repository' => 'articles',
-                                'mountpoint' => '/articles',
+                    'stuff' => [
+                        'type' => 'composite',
+                        'options' => [
+                            'mounts' => [
+                                [
+                                    'repository' => 'content',
+                                    'mountpoint' => '/content',
+                                ],
+                                [
+                                    'repository' => 'articles',
+                                    'mountpoint' => '/articles',
+                                ],
                             ],
                         ],
                     ],
                 ],
-            ],
-        ], [$source]);
+        ], $config);
     }
 }

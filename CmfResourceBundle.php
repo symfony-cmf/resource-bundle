@@ -13,15 +13,21 @@ namespace Symfony\Cmf\Bundle\ResourceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RegistryPass;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\CompositeRepositoryPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\CompositeFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\FilesystemFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
 
 class CmfResourceBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegistryPass());
-        $container->addCompilerPass(new CompositeRepositoryPass());
+        $extension = $container->getExtension('cmf_resource');
+        $extension->addRepositoryFactory('composite', new CompositeFactory());
+        $extension->addRepositoryFactory('filesystem', new FilesystemFactory());
+        $extension->addRepositoryFactory('doctrine_phpcr', new DoctrinePhpcrFactory());
+        $extension->addRepositoryFactory('doctrine_phpcr_odm', new DoctrinePhpcrOdmFactory());
+
         parent::build($container);
     }
 }
