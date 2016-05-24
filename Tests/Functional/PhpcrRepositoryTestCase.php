@@ -11,32 +11,98 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
-use Doctrine\ODM\PHPCR\Document\Generic;
+use PHPCR\NodeInterface;
 
-class PhpcrRepositoryTestCase extends BaseTestCase
+/**
+ * @author Maximilian Berghoff <Maximilian.Berghoff@mayflower.de>
+ */
+abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
 {
-    protected $dm;
-
-    public function setUp()
+    /**
+     * @dataProvider provideGet
+     */
+    public function testRepositoryGet($path, $expectedName)
     {
-        $this->dm = $this->db('PHPCR')->getOm();
+        $res = $this->getRepository()->get($path);
+        $this->assertNotNull($res);
+        $payload = $res->getPayload();
 
-        $this->db('PHPCR')->purgeRepository(true);
-        $this->db('PHPCR')->createTestNode();
+        $this->assertEquals(
+            $expectedName,
+            ($payload instanceof NodeInterface ? $payload->getName() : $payload->getNodeName())
+        );
+    }
 
-        $rootDocument = $this->dm->find(null, '/test');
-        $document = new Generic();
-        $document->setNodeName('foo');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
+    /**
+     * @dataProvider provideFind
+     */
+    public function testRepositoryFind($pattern, $nbResults)
+    {
+        $res = $this->getRepository()->find($pattern);
+        $this->assertCount($nbResults, $res);
+    }
 
-        $document = new Generic();
-        $document->setNodeName('bar');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
-        $this->dm->flush();
+    /**
+     * @dataProvider provideMove
+     */
+    public function testRepositoryMove($sourcePath, $targetPath, $expectedNodeName)
+    {
+        $res = $this->getRepository()->move($sourcePath, $targetPath);
 
-        $this->repositoryRegistry = $this->container->get('cmf_resource.registry');
+        $this->assertEquals(1, $res);
+        $this->assertEquals($expectedNodeName, $this->session->getNode('/test'.$targetPath)->getName());
+    }
+
+    /**
+     * @dataProvider provideDelete
+     * @expectedException \PHPCR\PathNotFoundException
+     */
+    public function testRepositoryRemove($path, $expectedDeleted)
+    {
+        $res = $this->getRepository()->remove($path);
+
+        $this->assertEquals($expectedDeleted, $res);
+        $this->session->getNode($path);
+    }
+
+    public function provideGet()
+    {
+        return array(
+            array('/foo', 'foo'),
+            array('/bar', 'bar'),
+            array('/', 'test'),
+        );
+    }
+
+    public function provideFind()
+    {
+        return array(
+            array('/*', 2),
+            array('/', 1),
+        );
+    }
+
+    public function provideMove()
+    {
+        return [
+            ['/foo', '/foo-bar', 'foo-bar'],
+            ['/foo', '/bar/foo', 'foo'],
+        ];
+    }
+
+    public function provideDelete()
+    {
+        return [
+            ['/foo', 2],
+            ['/bar', 1],
+        ];
+    }
+
+    public function provideAdd()
+    {
+        return [
+            ['/', 'blubb'],
+            ['/foo', 'blubb'],
+        ];
     }
 }

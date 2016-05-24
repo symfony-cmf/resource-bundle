@@ -12,68 +12,48 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
+use PHPCR\Util\PathHelper;
+use Puli\Repository\Resource\Collection\ArrayResourceCollection;
+use Symfony\Cmf\Component\Resource\Repository\Resource\PhpcrOdmResource;
 
-class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
+class PhpcrOdmPhpcrRepositoryTest extends PhpcrRepositoryTestCase
 {
-    public function setUp()
+    protected function getRepository()
     {
-        $this->dm = $this->db('PHPCR')->getOm();
-
-        $this->db('PHPCR')->purgeRepository(true);
-        $this->db('PHPCR')->createTestNode();
-
-        $rootDocument = $this->dm->find(null, '/test');
-        $document = new Generic();
-        $document->setNodeName('foo');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
-
-        $document = new Generic();
-        $document->setNodeName('bar');
-        $document->setParentDocument($rootDocument);
-        $this->dm->persist($document);
-        $this->dm->flush();
-
-        $this->repositoryRegistry = $this->container->get('cmf_resource.registry');
-    }
-
-    public function provideGet()
-    {
-        return [
-            ['/foo', 'foo'],
-            ['/bar', 'bar'],
-            ['/', 'test'],
-        ];
+        return $this->repositoryRegistry->get('test_repository_phpcr_odm');
     }
 
     /**
-     * @dataProvider provideGet
+     * @dataProvider provideAdd
      */
-    public function testRepositoryGet($path, $expectedName)
+    public function testRepositoryAddSingleResource($path, $name)
     {
-        $repository = $this->repositoryRegistry->get('test_repository');
-        $res = $repository->get($path);
-        $this->assertNotNull($res);
-        $document = $res->getPayload();
+        $document = new Generic();
+        $document->setNodeName($name);
+        $document->setParentDocument($this->dm->find(null, '/test'.('/' === $path ? '' : $path)));
+        $this->dm->persist($document);
 
-        $this->assertEquals($expectedName, $document->getNodeName());
-    }
+        $resource = new PhpcrOdmResource($path, $document);
+        $this->getRepository()->add($path, $resource);
 
-    public function provideFind()
-    {
-        return [
-            ['/*', 2],
-            ['/', 1],
-        ];
+        $document = $this->dm->find(null, '/test'.$path.('/' === $path ? '' : '/').$name);
+        $this->assertEquals($name, $document->getNodeName());
     }
 
     /**
-     * @dataProvider provideFind
+     * @dataProvider provideAdd
      */
-    public function testRepositoryFind($pattern, $nbResults)
+    public function testRepositoryAddResourceCollection($path, $name)
     {
-        $repository = $this->repositoryRegistry->get('test_repository');
-        $res = $repository->find($pattern);
-        $this->assertCount($nbResults, $res);
+        $document = new Generic();
+        $document->setNodeName($name);
+        $document->setParentDocument($this->dm->find(null, '/test'.('/' === $path ? '' : $path)));
+        $this->dm->persist($document);
+
+        $resource = new ArrayResourceCollection([new PhpcrOdmResource($path, $document)]);
+        $this->getRepository()->add($path, $resource);
+
+        $document = $this->dm->find(null, '/test'.PathHelper::absolutizePath($name, $path));
+        $this->assertEquals($name, $document->getNodeName());
     }
 }

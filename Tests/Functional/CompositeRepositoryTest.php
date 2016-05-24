@@ -11,8 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-class CompositeRepositoryTest extends PhpcrRepositoryTestCase
+class CompositeRepositoryTest extends RepositoryTestCase
 {
+    const REPOSITORY = 'stuff';
+
     public function provideGet()
     {
         return [
@@ -26,8 +28,7 @@ class CompositeRepositoryTest extends PhpcrRepositoryTestCase
      */
     public function testRepositoryGet($path, $expectedName)
     {
-        $repository = $this->repositoryRegistry->get('stuff');
-        $res = $repository->get($path);
+        $res = $this->getRepository()->get($path);
         $this->assertNotNull($res);
         $document = $res->getPayload();
 
@@ -46,8 +47,12 @@ class CompositeRepositoryTest extends PhpcrRepositoryTestCase
      */
     public function testRepositoryFind($pattern, $nbResults)
     {
-        $repository = $this->repositoryRegistry->get('stuff');
-        $res = $repository->find($pattern);
+        $res = $this->getRepository()->find($pattern);
         $this->assertCount($nbResults, $res);
+    }
+
+    protected function getRepository()
+    {
+        return $this->repositoryRegistry->get('stuff');
     }
 }
