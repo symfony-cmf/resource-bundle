@@ -1,6 +1,6 @@
 # Symfony CMF Resource Bundle
 
-[![Build Status](https://secure.travis-ci.org/symfony-cmf/ResourceBundle.png?branch=master)](http://travis-ci.org/symfony-cmf/ResourceBundle)
+[![Build Status](https://travis-ci.org/symfony-cmf/resource-bundle.svg?branch=master)](https://travis-ci.org/symfony-cmf/resource-bundle)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/resource-bundle/version.png)](https://packagist.org/packages/symfony-cmf/resource-bundle)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/resource-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/resource-bundle)
 
