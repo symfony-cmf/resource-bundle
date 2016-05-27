@@ -16,7 +16,7 @@ use PHPCR\Util\PathHelper;
 use Puli\Repository\Resource\Collection\ArrayResourceCollection;
 use Symfony\Cmf\Component\Resource\Repository\Resource\PhpcrOdmResource;
 
-class PhpcrOdmPhpcrRepositoryTest extends PhpcrRepositoryTestCase
+class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 {
     protected function getRepository()
     {
