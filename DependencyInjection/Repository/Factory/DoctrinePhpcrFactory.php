@@ -25,7 +25,7 @@ class DoctrinePhpcrFactory implements RepositoryFactoryInterface
     {
         return new Definition(PhpcrRepository::class, [
             new Reference('doctrine_phpcr.session'),
-            $options['basedir'],
+            $options['basepath'],
         ]);
     }
 
@@ -42,6 +42,6 @@ class DoctrinePhpcrFactory implements RepositoryFactoryInterface
      */
     public function configure(OptionsResolver $options)
     {
-        $options->setDefault('basedir', null);
+        $options->setDefault('basepath', null);
     }
 }
