@@ -20,6 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Puli\Repository\Api\ResourceRepository;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Description\Enhancer\Factory\EnhancerFactoryInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -106,5 +108,26 @@ class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertContains('Invalid configuration for repository "test"', $e->getMessage());
             $this->assertInstanceOf(MissingOptionsException::class, $e->getPrevious());
         }
+    }
+
+    /**
+     * Description Enhancers: It should load description enhancers.
+     */
+    public function testLoadDescriptionEnhancers()
+    {
+        $enhancerFactory = $this->prophesize(EnhancerFactoryInterface::class);
+        $enhancerFactory->create()->willReturn(new Definition('stdClass'));
+        $this->extension->addDescriptionEnhancerFactory('foobar', $enhancerFactory->reveal());
+
+        $this->extension->load([
+            [
+                'description' => [
+                    'enhancers' => [ 'foobar' ],
+                ],
+            ],
+        ], $this->container);
+
+        $definition = $this->container->getDefinition('cmf_resource.description.factory');
+        $this->assertEquals([ new Reference('cmf_resource.description.enhancer.foobar') ], $definition->getArgument(0));
     }
 }

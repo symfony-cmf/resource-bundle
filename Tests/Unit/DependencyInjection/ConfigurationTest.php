@@ -54,35 +54,38 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $source);
         $this->assertEquals([
-                'repositories' => [
-                    'content' => [
-                        'type' => 'doctrine_phpcr_odm',
-                        'options' => [
-                            'basepath' => '/cmf/content',
-                        ],
+            'description' => [
+                'enhancers' => [],
+            ],
+            'repositories' => [
+                'content' => [
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => [
+                        'basepath' => '/cmf/content',
                     ],
-                    'articles' => [
-                        'type' => 'doctrine_phpcr_odm',
-                        'options' => [
-                            'basepath' => '/cmf/articles',
-                        ],
+                ],
+                'articles' => [
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => [
+                        'basepath' => '/cmf/articles',
                     ],
-                    'stuff' => [
-                        'type' => 'composite',
-                        'options' => [
-                            'mounts' => [
-                                [
-                                    'repository' => 'content',
-                                    'mountpoint' => '/content',
-                                ],
-                                [
-                                    'repository' => 'articles',
-                                    'mountpoint' => '/articles',
-                                ],
+                ],
+                'stuff' => [
+                    'type' => 'composite',
+                    'options' => [
+                        'mounts' => [
+                            [
+                                'repository' => 'content',
+                                'mountpoint' => '/content',
+                            ],
+                            [
+                                'repository' => 'articles',
+                                'mountpoint' => '/articles',
                             ],
                         ],
                     ],
                 ],
+            ],
         ], $config);
     }
 }
