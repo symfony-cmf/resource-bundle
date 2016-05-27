@@ -27,7 +27,7 @@ abstract class RepositoryTestCase extends BaseTestCase
     protected $dm;
 
     /**
-     * @var  RepositoryRegistryInterface
+     * @var RepositoryRegistryInterface
      */
     protected $repositoryRegistry;
 

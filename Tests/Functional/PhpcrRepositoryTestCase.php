@@ -76,10 +76,10 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
 
     public function provideFind()
     {
-        return array(
-            array('/*', 2),
-            array('/', 1),
-        );
+        return [
+            ['/*', 2],
+            ['/', 1],
+        ];
     }
 
     public function provideMove()
