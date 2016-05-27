@@ -12,75 +12,99 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Puli\Repository\Api\ResourceRepository;
 
-class CmfResourceExtensionTest extends AbstractExtensionTestCase
+class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    protected function getContainerExtensions()
-    {
-        return [new CmfResourceExtension()];
-    }
+    private $container;
+    private $extension;
+    private $repositoryFactory;
 
-    public function provideExtension()
+    public function setUp()
     {
-        return [
-            [
-                [
-                    'repositories' => [
-                        'foobar_odm' => [
-                            'type' => 'doctrine_phpcr_odm',
-                            'options' => [
-                                'basepath' => '/cmf/foo',
-                            ],
-                        ],
-                        'foobar_phpcr' => [
-                            'type' => 'doctrine_phpcr',
-                            'options' => [
-                                'basepath' => '/cmf/foo',
-                            ],
-                        ],
-                        'foobar_filesystem' => [
-                            'type' => 'filesystem',
-                            'options' => [
-                                'base_dir' => '/assets',
-                            ],
-                        ],
-                        'unified' => [
-                            'type' => 'composite',
-                            'options' => [
-                                'mounts' => [
-                                    [
-                                        'repository' => 'foobar',
-                                        'mountpoint' => '/foobar',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'cmf_resource.repository.foobar_odm',
-                    'cmf_resource.repository.foobar_phpcr',
-                    'cmf_resource.repository.unified',
-                    'cmf_resource.repository.foobar_filesystem',
-                ],
-            ],
-            [
-                [],
-                [],
-            ],
-        ];
+        $this->repositoryFactory = $this->prophesize(RepositoryFactoryInterface::class);
+        $this->container = new ContainerBuilder();
+        $this->extension = new CmfResourceExtension();
+
+        $repository = $this->prophesize(ResourceRepository::class);
+        $this->extension->addRepositoryFactory('foobar', $this->repositoryFactory->reveal());
+        $this->repositoryFactory->create([])->willReturn(new Definition(get_class($repository->reveal())));
+        $this->repositoryFactory->configure(Argument::type(OptionsResolver::class))->willReturn(null);
     }
 
     /**
-     * @dataProvider provideExtension
+     * It should set the repositories into the registry.
+     * It should load the type map into the registry.
      */
-    public function testExtension($config, $expectedServiceIds)
+    public function testLoadRegistry()
     {
-        $this->load($config);
+        $this->extension->load([
+            [
+                'repositories' => [
+                    'test' => [
+                        'type' => 'foobar',
+                    ],
+                ],
+            ],
+        ], $this->container);
 
-        foreach ($expectedServiceIds as $expectedServiceId) {
-            $this->assertContainerBuilderHasService($expectedServiceId);
+        $registry = $this->container->get('cmf_resource.registry');
+        $repository = $registry->get('test');
+
+        $this->assertInstanceOf(ResourceRepository::class, $repository);
+        $this->assertEquals('foobar', $registry->getRepositoryType($repository));
+    }
+
+    /**
+     * Repositories: It should throw an exception if an unknown type is specified.
+     *
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown repository type "bar", known repository types: "foobar"
+     */
+    public function testConfigRepositoryNoType()
+    {
+        $this->extension->load([
+            [
+                'repositories' => [
+                    'test' => [
+                        'type' => 'bar',
+                    ],
+                ],
+            ],
+        ], $this->container);
+    }
+
+    /**
+     * Repositories: It should wrap exceptions thrown by the options resolver.
+     */
+    public function testWrapExceptionOptionsResolver()
+    {
+        $this->repositoryFactory->configure(Argument::type(OptionsResolver::class))->will(function ($args) {
+            $args[0]->setRequired('barbar');
+        });
+
+        try {
+            $this->extension->load([
+                [
+                    'repositories' => [
+                        'test' => [
+                            'type' => 'foobar',
+                        ],
+                    ],
+                ],
+            ], $this->container);
+            $this->fail('No exception has been thrown');
+        } catch (\Exception $e) {
+            $this->assertInstanceOf(InvalidArgumentException::class, $e);
+            $this->assertContains('Invalid configuration for repository "test"', $e->getMessage());
+            $this->assertInstanceOf(MissingOptionsException::class, $e->getPrevious());
         }
     }
 }

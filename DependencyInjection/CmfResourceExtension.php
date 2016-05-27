@@ -14,14 +14,28 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CmfResourceExtension extends Extension
 {
+    private $repositoryFactories = [];
+
+    /**
+     * Return the full service ID for a given repository name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function getRepositoryServiceId($name)
+    {
+        return sprintf('cmf_resource.repository.%s', $name);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,125 +44,70 @@ class CmfResourceExtension extends Extension
         $processor = new Processor();
         $configuration = new Configuration();
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
+        $config = $processor->processConfiguration($configuration, $configs);
         $loader->load('resource.xml');
 
-        $config = $processor->processConfiguration($configuration, $configs);
-
-        $this->loadRepositories($config['repositories'], $container);
+        $this->loadRepositories($container, $config['repositories']);
     }
 
-    private function loadRepositories(array $repositories, ContainerBuilder $container)
+    private function loadRepositories(ContainerBuilder $container, array $configs)
     {
-        $methods = [
-            'composite' => 'createCompositeRepository',
-            'doctrine_phpcr' => 'createDoctrinePhpcrRepository',
-            'doctrine_phpcr_odm' => 'createDoctrinePhpcrOdmRepository',
-            'filesystem' => 'createFilesystemRepository',
-        ];
+        $repositoryTypes = array_keys($this->repositoryFactories);
+        $typeMap = [];
+        $serviceMap = [];
+        foreach ($configs as $repositoryName => $config) {
+            $type = $config['type'];
 
-        foreach ($repositories as $alias => $repository) {
-            if (!isset($methods[$repository['type']])) {
-                throw new InvalidConfigurationException(sprintf(
-                    'Unexpected repository type "%s", known types: %s',
-                    $repository['type'],
-                    implode(', ', array_keys($methods))
+            if (!isset($this->repositoryFactories[$type])) {
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown repository type "%s", known repository types: "%s"',
+                    $type,
+                    implode('", "', $repositoryTypes)
                 ));
             }
 
-            $definition = $this->{$methods[$repository['type']]}($repository['options'], $alias);
-            $definition->addTag('cmf_resource.repository', ['type' => $repository['type'], 'alias' => $alias]);
-            $container->setDefinition('cmf_resource.repository.'.$alias, $definition);
-        }
+            $factory = $this->repositoryFactories[$type];
 
-        $container->setAlias('cmf_resource.registry', 'cmf_resource.registry.container');
-    }
+            $optionsResolver = new OptionsResolver();
+            $factory->configure($optionsResolver);
 
-    private function createDoctrinePhpcrOdmRepository(array $options, $alias)
-    {
-        if (!isset($options['basepath'])) {
-            $options['basepath'] = null;
-        }
-
-        $definition = new Definition('Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository');
-        $definition->addArgument(new Reference('doctrine_phpcr'));
-        $definition->addArgument($options['basepath']);
-
-        unset($options['basepath']);
-
-        $this->validateRemainingOptions($options, ['basepath'], $alias);
-
-        return $definition;
-    }
-
-    private function createDoctrinePhpcrRepository(array $options, $alias)
-    {
-        if (!isset($options['basepath'])) {
-            $options['basepath'] = null;
-        }
-
-        $definition = new Definition('Symfony\Cmf\Component\Resource\Repository\PhpcrRepository');
-        $definition->addArgument(new Reference('doctrine_phpcr.session'));
-        $definition->addArgument($options['basepath']);
-
-        unset($options['basepath']);
-
-        $this->validateRemainingOptions($options, ['basepath'], $alias);
-
-        return $definition;
-    }
-
-    private function createCompositeRepository(array $options, $alias)
-    {
-        if (!isset($options['mounts'])) {
-            throw new InvalidConfigurationException('The composite repository type requires a "mounts" option to be set.');
-        }
-
-        $definition = new Definition('Puli\Repository\CompositeRepository');
-
-        foreach ($options['mounts'] as $mount) {
-            if (!isset($mount['mountpoint']) || !isset($mount['repository'])) {
-                throw new InvalidConfigurationException('The "mounts" option of the composite repository type requires a "mountpoint" and "repository" options to be set.');
+            try {
+                $config = $optionsResolver->resolve($config['options']);
+            } catch (\Exception $e) {
+                throw new InvalidArgumentException(sprintf(
+                    'Invalid configuration for repository "%s"',
+                    $repositoryName
+                ), null, $e);
             }
 
-            $definition->addMethodCall('mount', [$mount['mountpoint'], $mount['repository']]);
+            $serviceId = self::getRepositoryServiceId($repositoryName);
+            $definition = $factory->create($config);
+            $typeMap[$definition->getClass()] = $type;
+            $serviceMap[$repositoryName] = $serviceId;
+
+            $container->setDefinition($serviceId, $definition);
         }
 
-        unset($options['mounts']);
-
-        $this->validateRemainingOptions($options, ['mounts'], $alias);
-
-        return $definition;
+        $registry = $container->getDefinition('cmf_resource.registry');
+        $registry->replaceArgument(1, $serviceMap);
+        $registry->replaceArgument(2, $typeMap);
     }
 
-    private function createFilesystemRepository(array $options)
+    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
     {
-        if (!isset($options['base_dir'])) {
-            throw new InvalidConfigurationException('The filesystem repository type requires a "base_dir" option to be set.');
-        }
-
-        if (!isset($options['symlink'])) {
-            $options['symlink'] = true;
-        }
-
-        $definition = new Definition('Puli\Repository\FilesystemRepository');
-        $definition->setArguments([$options['base_dir'], $options['symlink']]);
-
-        return $definition;
-    }
-
-    private function validateRemainingOptions(array $options, array $knownOptions, $name)
-    {
-        if (0 !== count($options)) {
-            throw new InvalidConfigurationException(sprintf(
-                'Unknown option configured for "%s": "%s". Known options: %s',
-                $name,
-                implode('", "', array_keys($options)),
-                implode(', ', $knownOptions)
+        if (isset($this->repositoryFactories[$name])) {
+            throw new \RuntimeException(sprintf(
+                'Repository factory "%s" has already been set.',
+                $name
             ));
         }
+
+        $this->repositoryFactories[$name] = $factory;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getNamespace()
     {
         return 'http://cmf.symfony.com/schema/dic/'.$this->getAlias();
