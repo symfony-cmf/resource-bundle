@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ class CompositeRepositoryPass implements CompilerPassInterface
     {
         $taggedRepoIds = $container->findTaggedServiceIds('cmf_resource.repository');
 
-        $map = array();
+        $map = [];
         foreach ($taggedRepoIds as $id => $attributes) {
             if (!isset($attributes[0]['alias'])) {
                 throw new InvalidArgumentException(sprintf(
@@ -48,7 +48,7 @@ class CompositeRepositoryPass implements CompilerPassInterface
             }
 
             $definition = $container->getDefinition($id);
-            $newMethodCalls = array();
+            $newMethodCalls = [];
 
             // the second argument to mount is a Repository but earlier
             // we populated with the ID of the service we want. Now it

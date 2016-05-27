@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class CmfResourceExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -40,13 +40,13 @@ class CmfResourceExtension extends Extension
 
     private function loadRepositories(array $repositories, ContainerBuilder $container)
     {
-        $methods = array(
+        $methods = [
             'composite' => 'createCompositeRepository',
             'doctrine_phpcr' => 'createDoctrinePhpcrRepository',
             'doctrine_phpcr_odm' => 'createDoctrinePhpcrOdmRepository',
             'filesystem' => 'createFilesystemRepository',
-        );
-       
+        ];
+
         foreach ($repositories as $alias => $repository) {
             if (!isset($methods[$repository['type']])) {
                 throw new InvalidConfigurationException(sprintf(
@@ -57,8 +57,8 @@ class CmfResourceExtension extends Extension
             }
 
             $definition = $this->{$methods[$repository['type']]}($repository['options'], $alias);
-            $definition->addTag('cmf_resource.repository', array('type' => $repository['type'], 'alias' => $alias));
-            $container->setDefinition('cmf_resource.repository.' . $alias, $definition);
+            $definition->addTag('cmf_resource.repository', ['type' => $repository['type'], 'alias' => $alias]);
+            $container->setDefinition('cmf_resource.repository.'.$alias, $definition);
         }
 
         $container->setAlias('cmf_resource.registry', 'cmf_resource.registry.container');
@@ -76,7 +76,7 @@ class CmfResourceExtension extends Extension
 
         unset($options['basepath']);
 
-        $this->validateRemainingOptions($options, array('basepath'), $alias);
+        $this->validateRemainingOptions($options, ['basepath'], $alias);
 
         return $definition;
     }
@@ -93,7 +93,7 @@ class CmfResourceExtension extends Extension
 
         unset($options['basepath']);
 
-        $this->validateRemainingOptions($options, array('basepath'), $alias);
+        $this->validateRemainingOptions($options, ['basepath'], $alias);
 
         return $definition;
     }
@@ -111,12 +111,12 @@ class CmfResourceExtension extends Extension
                 throw new InvalidConfigurationException('The "mounts" option of the composite repository type requires a "mountpoint" and "repository" options to be set.');
             }
 
-            $definition->addMethodCall('mount', array($mount['mountpoint'], $mount['repository']));
+            $definition->addMethodCall('mount', [$mount['mountpoint'], $mount['repository']]);
         }
 
         unset($options['mounts']);
 
-        $this->validateRemainingOptions($options, array('mounts'), $alias);
+        $this->validateRemainingOptions($options, ['mounts'], $alias);
 
         return $definition;
     }
@@ -132,7 +132,7 @@ class CmfResourceExtension extends Extension
         }
 
         $definition = new Definition('Puli\Repository\FilesystemRepository');
-        $definition->setArguments(array($options['base_dir'], $options['symlink']));
+        $definition->setArguments([$options['base_dir'], $options['symlink']]);
 
         return $definition;
     }
@@ -151,6 +151,6 @@ class CmfResourceExtension extends Extension
 
     public function getNamespace()
     {
-        return 'http://cmf.symfony.com/schema/dic/' . $this->getAlias();
+        return 'http://cmf.symfony.com/schema/dic/'.$this->getAlias();
     }
 }

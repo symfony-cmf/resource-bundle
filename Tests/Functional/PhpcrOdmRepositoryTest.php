@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,7 +22,7 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
         $this->db('PHPCR')->purgeRepository(true);
         $this->db('PHPCR')->createTestNode();
 
-        $rootDocument =  $this->dm->find(null, '/test');
+        $rootDocument = $this->dm->find(null, '/test');
         $document = new Generic();
         $document->setNodeName('foo');
         $document->setParentDocument($rootDocument);
@@ -39,11 +39,11 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 
     public function provideGet()
     {
-        return array(
-            array('/foo', 'foo'),
-            array('/bar', 'bar'),
-            array('/', 'test'),
-        );
+        return [
+            ['/foo', 'foo'],
+            ['/bar', 'bar'],
+            ['/', 'test'],
+        ];
     }
 
     /**
@@ -61,10 +61,10 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 
     public function provideFind()
     {
-        return array(
-            array('/*', 2),
-            array('/', 1),
-        );
+        return [
+            ['/*', 2],
+            ['/', 1],
+        ];
     }
 
     /**

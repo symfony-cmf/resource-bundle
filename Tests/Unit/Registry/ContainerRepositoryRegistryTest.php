@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Bundle\ResourceBundle\Registry\ContainerRepositoryRegistry;
-use Prophecy\Argument;
 
 class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,10 +23,10 @@ class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container = $this->prophesize('Symfony\Component\DependencyInjection\ContainerInterface');
         $this->repo = $this->prophesize('Puli\Repository\Api\ResourceRepository');
-        $serviceMap = array(
+        $serviceMap = [
             'one' => 'repo1_service',
             'two' => 'repo2_service',
-        );
+        ];
 
         $this->registry = new ContainerRepositoryRegistry($this->container->reveal(), $serviceMap);
     }
@@ -42,11 +41,11 @@ class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function provideGetDefaultRepository()
     {
-        return array(
-            'normal behaviour' => array(),
-            'overriden default id' => array('the_default'),
-            'no default service' => array(null, false),
-        );
+        return [
+            'normal behaviour' => [],
+            'overriden default id' => ['the_default'],
+            'no default service' => [null, false],
+        ];
     }
 
     /**
@@ -61,7 +60,7 @@ class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         }
 
         if (false !== $defaultId) {
-            $registry = new ContainerRepositoryRegistry($this->container->reveal(), array(), array(), 'the_default');
+            $registry = new ContainerRepositoryRegistry($this->container->reveal(), [], [], 'the_default');
         } else {
             $registry = new ContainerRepositoryRegistry($this->container->reveal());
         }
@@ -80,4 +79,3 @@ class ContainerRepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('one', $this->registry->getRepositoryAlias($repo1));
     }
 }
-

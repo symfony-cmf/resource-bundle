@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,20 +26,20 @@ class CompositeRepositoryPassTest extends AbstractCompilerPassTestCase
     public function testCompilerPass()
     {
         $repo = new Definition();
-        $repo->addTag('cmf_resource.repository', array(
+        $repo->addTag('cmf_resource.repository', [
             'type' => 'doctrine_phpcr_odm',
             'alias' => 'repository_alias',
-        ));
+        ]);
 
         $this->setDefinition('cmf_resource.repository.test_repository', $repo);
 
         $compRepo = new Definition();
-        $compRepo->addMethodCall('mount', array('/cmf/foobar', 'some_service_id'));
-        $compRepo->addMethodCall('mount', array('/cmf/barbar', 'repository_alias'));
-        $compRepo->addTag('cmf_resource.repository', array(
+        $compRepo->addMethodCall('mount', ['/cmf/foobar', 'some_service_id']);
+        $compRepo->addMethodCall('mount', ['/cmf/barbar', 'repository_alias']);
+        $compRepo->addTag('cmf_resource.repository', [
             'type' => 'composite',
             'alias' => 'foobar',
-        ));
+        ]);
 
         $this->setDefinition('cmf_resource.repository.test_composite', $compRepo);
 

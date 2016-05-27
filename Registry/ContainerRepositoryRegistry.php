@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,14 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 
-use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
-use Puli\Repository\Api\Resource\Resource;
 use Puli\Repository\Api\ResourceRepository;
 
 /**
- * Registry which acts as a proxy to the Symfony DI container
+ * Registry which acts as a proxy to the Symfony DI container.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -27,7 +25,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     /**
      * @var array
      */
-    private $serviceMap = array();
+    private $serviceMap = [];
 
     /**
      * @var array
@@ -42,7 +40,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     /**
      * @var array
      */
-    private $repositoryTypes = array();
+    private $repositoryTypes = [];
 
     /**
      * @var string|null
@@ -51,10 +49,10 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
 
     /**
      * @param ContainerInterface $container
-     * @param array $serviceMap
-     * @param array $typeMap
+     * @param array              $serviceMap
+     * @param array              $typeMap
      */
-    public function __construct(ContainerInterface $container, $serviceMap = array(), $typeMap = array(), $defaultRepositoryId = 'cmf_resource.repository.default')
+    public function __construct(ContainerInterface $container, $serviceMap = [], $typeMap = [], $defaultRepositoryId = 'cmf_resource.repository.default')
     {
         $this->serviceMap = $serviceMap;
         $this->container = $container;
@@ -63,7 +61,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($repositoryAlias = null)
     {
@@ -71,7 +69,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRepositoryAlias(ResourceRepository $resourceRepository)
     {
@@ -84,14 +82,14 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
         }
 
         throw new \RuntimeException(sprintf(
-            'Could not determine registration name for repository of type "%s".' .
+            'Could not determine registration name for repository of type "%s".'.
             'No matching repository exists in the registry',
             get_class($resourceRepository)
         ));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRepositoryType(ResourceRepository $resourceRepository)
     {
@@ -110,7 +108,7 @@ class ContainerRepositoryRegistry implements RepositoryRegistryInterface
     }
 
     /**
-     * Return the service ID for the given repository alias
+     * Return the service ID for the given repository alias.
      *
      * @param null|string $alias
      *
