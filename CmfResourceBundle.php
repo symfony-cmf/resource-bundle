@@ -17,6 +17,7 @@ use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\Com
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\FilesystemFactory;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrFactory;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Description\Enhancer\Factory\SonataAdminFactory;
 
 class CmfResourceBundle extends Bundle
 {

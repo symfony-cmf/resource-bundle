@@ -19,10 +19,13 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Description\Enhancer\Factory\EnhancerFactoryInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 class CmfResourceExtension extends Extension
 {
     private $repositoryFactories = [];
+    private $descriptionEnhancerFactories = [];
 
     /**
      * Return the full service ID for a given repository name.
@@ -48,6 +51,37 @@ class CmfResourceExtension extends Extension
         $loader->load('resource.xml');
 
         $this->loadRepositories($container, $config['repositories']);
+        $this->loadDescriptionEnhancers($container, $config['description']['enhancers']);
+    }
+
+    /**
+     * Add a repository DI definition factory.
+     *
+     * @param string $name
+     * @param RepositoryFactoryInterface $factory
+     */
+    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
+    {
+        $this->repositoryFactories[$name] = $factory;
+    }
+
+    /**
+     * Add a description enhancer DI definition factory.
+     *
+     * @param string $name
+     * @param EnhancerFactoryInterface
+     */
+    public function addDescriptionEnhancerFactory($name, EnhancerFactoryInterface $enhancer)
+    {
+        $this->descriptionEnhancerFactories[$name] = $enhancer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/'.$this->getAlias();
     }
 
     private function loadRepositories(ContainerBuilder $container, array $configs)
@@ -93,23 +127,28 @@ class CmfResourceExtension extends Extension
         $registry->replaceArgument(2, $typeMap);
     }
 
-    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
+    private function loadDescriptionEnhancers(ContainerBuilder $container, array $enhancers)
     {
-        if (isset($this->repositoryFactories[$name])) {
-            throw new \RuntimeException(sprintf(
-                'Repository factory "%s" has already been set.',
-                $name
-            ));
+        $enhancerReferences = [];
+        foreach ($enhancers as $enhancerName) {
+            if (!isset($this->descriptionEnhancerFactories[$enhancerName])) {
+                throw new InvalidArgumentException(sprintf(
+                    'No definition factory has been registered for enhancer "%s", available factories: "%s"',
+                    $enhancerName,
+                    implode('", "', array_keys($this->descriptionEnhancerFactories))
+                ));
+            }
+
+            $serviceId = sprintf('cmf_resource.description.enhancer.%s', $enhancerName);
+            $enhancer = $this->descriptionEnhancerFactories[$enhancerName]->create();
+            $container->setDefinition($serviceId, $enhancer);
+            $enhancerReferences[] = new Reference($serviceId);
         }
 
-        $this->repositoryFactories[$name] = $factory;
+        $factory = $container->getDefinition('cmf_resource.description.factory');
+        $factory->setArguments([
+            $enhancerReferences
+        ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://cmf.symfony.com/schema/dic/'.$this->getAlias();
-    }
 }

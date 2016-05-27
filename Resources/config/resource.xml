@@ -17,5 +17,9 @@
             <argument /> <!-- type map !-->
         </service>
 
+        <service id="cmf_resource.description.factory" class="Symfony\Cmf\Component\Resource\Description\DescriptionFactory">
+            <argument type="collection" /> <!-- enhancers !-->
+        </service>
+
     </services>
 </container>
