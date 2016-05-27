@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,10 +29,10 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 
     public function provideConfig()
     {
-        return array(
-            array(__DIR__ . '/fixtures/config.xml'),
-            array(__DIR__ . '/fixtures/config.yml'),
-        );
+        return [
+            [__DIR__.'/fixtures/config.xml'],
+            [__DIR__.'/fixtures/config.yml'],
+        ];
     }
 
     /**
@@ -40,36 +40,36 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
      */
     public function testConfig($source)
     {
-        $this->assertProcessedConfigurationEquals(array(
-            'repositories' => array(
-                'content' => array(
+        $this->assertProcessedConfigurationEquals([
+            'repositories' => [
+                'content' => [
                     'type' => 'doctrine_phpcr_odm',
-                    'options' => array(
+                    'options' => [
                         'basepath' => '/cmf/content',
-                    ),
-                ),
-                'articles' => array(
+                    ],
+                ],
+                'articles' => [
                     'type' => 'doctrine_phpcr_odm',
-                    'options' => array(
+                    'options' => [
                         'basepath' => '/cmf/articles',
-                    ),
-                ),
-                'stuff' => array(
+                    ],
+                ],
+                'stuff' => [
                     'type' => 'composite',
-                    'options' => array(
-                        'mounts' => array(
-                            array(
+                    'options' => [
+                        'mounts' => [
+                            [
                                 'repository' => 'content',
                                 'mountpoint' => '/content',
-                            ),
-                            array(
+                            ],
+                            [
                                 'repository' => 'articles',
                                 'mountpoint' => '/articles',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ), array($source));
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], [$source]);
     }
 }

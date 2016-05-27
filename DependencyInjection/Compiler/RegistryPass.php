@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,11 +28,11 @@ class RegistryPass implements CompilerPassInterface
         $repositoryRegistry = $container->getDefinition('cmf_resource.registry.container');
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository');
-        $map = array();
-        $types = array();
+        $map = [];
+        $types = [];
 
         foreach ($ids as $id => $attributes) {
-            foreach (array('alias', 'type') as $requiredKey) {
+            foreach (['alias', 'type'] as $requiredKey) {
                 if (!isset($attributes[0][$requiredKey])) {
                     throw new \InvalidArgumentException(sprintf(
                         'No "%s" attribute specified for repository service definition tag: "%s"',
