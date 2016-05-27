@@ -67,11 +67,11 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
 
     public function provideGet()
     {
-        return array(
-            array('/foo', 'foo'),
-            array('/bar', 'bar'),
-            array('/', 'test'),
-        );
+        return [
+            ['/foo', 'foo'],
+            ['/bar', 'bar'],
+            ['/', 'test'],
+        ];
     }
 
     public function provideFind()
