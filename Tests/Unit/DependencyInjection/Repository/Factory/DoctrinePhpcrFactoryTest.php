@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repository\Factory;
 
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrFactory;
-
 use PHPCR\SessionInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 use PHPCR\NodeInterface;
@@ -41,13 +40,13 @@ class DoctrinePhpcrFactoryTest extends FactoryTestCase
     }
 
     /**
-     * It should configure the basedir.
+     * It should configure the basepath.
      */
     public function testBasepath()
     {
         $container = $this->buildContainer(
             $this->resolveOptions([
-                'basedir' => '/cms/foo',
+                'basepath' => '/cms/foo',
             ])
         );
         $container->set('doctrine_phpcr.session', $this->session->reveal());

@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repository\Factory;
 
-
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;

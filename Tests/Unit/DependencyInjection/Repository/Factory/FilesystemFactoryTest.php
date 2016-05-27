@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repository\Factory;
 
-
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\FilesystemFactory;
 use Puli\Repository\FilesystemRepository;
 
