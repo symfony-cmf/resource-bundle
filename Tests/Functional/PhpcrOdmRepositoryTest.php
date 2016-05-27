@@ -36,7 +36,7 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
         $resource = new PhpcrOdmResource($path, $document);
         $this->getRepository()->add($path, $resource);
 
-        $document = $this->dm->find(null, '/test'.$path.('/' === $path ? '' : '/').$name);
+        $document = $this->dm->find(null, '/test'.PathHelper::absolutizePath($name, $path));
         $this->assertEquals($name, $document->getNodeName());
     }
 
