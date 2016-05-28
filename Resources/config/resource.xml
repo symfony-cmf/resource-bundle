@@ -13,8 +13,8 @@
 
         <service id="cmf_resource.registry" class="Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry">
             <argument type="service" id="service_container"/>
-            <argument /> <!-- service map !-->
-            <argument /> <!-- type map !-->
+            <argument /> <!-- service map -->
+            <argument /> <!-- type map -->
         </service>
 
     </services>

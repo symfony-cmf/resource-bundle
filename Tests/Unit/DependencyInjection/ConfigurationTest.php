@@ -54,20 +54,23 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $source);
         $this->assertEquals([
-                'repositories' => [
-                    'content' => [
-                        'type' => 'doctrine_phpcr_odm',
-                        'options' => [
-                            'basepath' => '/cmf/content',
-                        ],
-                    ],
-                    'articles' => [
-                        'type' => 'doctrine_phpcr_odm',
-                        'options' => [
-                            'basepath' => '/cmf/articles',
-                        ],
+            'description' => [
+                'enhancers' => [],
+            ],
+            'repositories' => [
+                'content' => [
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => [
+                        'basepath' => '/cmf/content',
                     ],
                 ],
+                'articles' => [
+                    'type' => 'doctrine_phpcr_odm',
+                    'options' => [
+                        'basepath' => '/cmf/articles',
+                    ],
+                ],
+            ],
         ], $config);
     }
 }

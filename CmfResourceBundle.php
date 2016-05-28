@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\FilesystemFactory;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrFactory;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\DescriptionEnhancerPass;
 
 class CmfResourceBundle extends Bundle
 {
@@ -25,6 +26,8 @@ class CmfResourceBundle extends Bundle
         $extension->addRepositoryFactory('filesystem', new FilesystemFactory());
         $extension->addRepositoryFactory('doctrine_phpcr', new DoctrinePhpcrFactory());
         $extension->addRepositoryFactory('doctrine_phpcr_odm', new DoctrinePhpcrOdmFactory());
+
+        $container->addCompilerPass(new DescriptionEnhancerPass());
 
         parent::build($container);
     }
