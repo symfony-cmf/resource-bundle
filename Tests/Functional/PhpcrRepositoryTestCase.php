@@ -47,9 +47,8 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
      */
     public function testRepositoryMove($sourcePath, $targetPath, $expectedNodeName)
     {
-        $res = $this->getRepository()->move($sourcePath, $targetPath);
+        $this->getRepository()->move($sourcePath, $targetPath);
 
-        $this->assertEquals(1, $res);
         $this->assertEquals($expectedNodeName, $this->session->getNode('/test'.$targetPath)->getName());
     }
 
@@ -59,9 +58,8 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
      */
     public function testRepositoryRemove($path, $expectedDeleted)
     {
-        $res = $this->getRepository()->remove($path);
+        $this->getRepository()->remove($path);
 
-        $this->assertEquals($expectedDeleted, $res);
         $this->session->getNode($path);
     }
 
