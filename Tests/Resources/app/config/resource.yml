@@ -1,7 +1,11 @@
 cmf_resource:
     repositories:
-        test_repository:
+        test_repository_phpcr_odm:
             type: doctrine_phpcr_odm
+            basepath: /test
+
+        test_repository_phpcr:
+            type: doctrine_phpcr
             basepath: /test
 
         articles:
@@ -15,5 +19,5 @@ cmf_resource:
         stuff:
             type: composite
             mounts:
-                - { repository: test_repository, mountpoint: /content }
+                - { repository: test_repository_phpcr_odm, mountpoint: /content }
                 - { repository: articles, mountpoint: /articles }

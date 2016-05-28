@@ -9,11 +9,17 @@
             "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ElectricMaxxx/resource.git"
+        }
+    ],
     "minimum-stability": "dev",
     "require": {
         "php": "^5.5.9|^7.0",
-        "symfony/framework-bundle": "^2.7|3.*",
-        "symfony-cmf/resource": "^1.0"
+        "symfony/framework-bundle": "^2.3|3.*",
+        "symfony-cmf/resource": "dev-write_move_delete"
     },
     "require-dev": {
         "symfony-cmf/testing": "^1.3",
