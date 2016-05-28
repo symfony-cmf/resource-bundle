@@ -95,13 +95,6 @@ class CmfResourceExtension extends Extension
 
     public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
     {
-        if (isset($this->repositoryFactories[$name])) {
-            throw new \RuntimeException(sprintf(
-                'Repository factory "%s" has already been set.',
-                $name
-            ));
-        }
-
         $this->repositoryFactories[$name] = $factory;
     }
 
