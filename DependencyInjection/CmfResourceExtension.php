@@ -47,6 +47,7 @@ class CmfResourceExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
         $loader->load('resource.xml');
         $loader->load('description.xml');
+        $loader->load('twig.xml');
         $container->setParameter('cmf_resource.description.enabled_enhancers', $config['description']['enhancers']);
 
         $this->loadRepositories($container, $config['repositories']);

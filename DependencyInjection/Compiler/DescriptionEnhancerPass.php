@@ -61,7 +61,7 @@ class DescriptionEnhancerPass implements CompilerPassInterface
 
         $inactiveEnhancers = array_diff($enhancerNames, $enabledEnhancers);
         foreach ($inactiveEnhancers as $inactiveEnhancer) {
-            $container->removeDefinition($serviceId);
+            $container->removeDefinition((string) $enhancers[$inactiveEnhancer]);
             unset($enhancers[$inactiveEnhancer]);
         }
 

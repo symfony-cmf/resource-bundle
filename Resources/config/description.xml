@@ -19,6 +19,14 @@
             <tag name="cmf_resource.description.enhancer" alias="sonata_admin" />
         </service>
 
+        <service id="cmf_resource.description.enhancer.sylius_resource" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Sylius\ResourceEnhancer">
+            <argument type="service" id="sylius.resource_registry" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="sylius.resource_controller.request_configuration_factory" />
+            <argument type="service" id="router" />
+            <tag name="cmf_resource.description.enhancer" alias="sylius_resource" />
+        </service>
+
     </services>
 </container>
 
