@@ -32,7 +32,9 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->addDefaultsIfNotSet()
                         ->beforeNormalization()
-                            ->ifTrue(function ($n) { return is_array($n) && !isset($n['options']) && !isset($n['option']); })
+                            ->ifTrue(function ($n) {
+                                return is_array($n) && !isset($n['options']) && !isset($n['option']);
+                            })
                             ->then(function ($n) {
                                 $options = [];
 

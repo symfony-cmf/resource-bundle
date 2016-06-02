@@ -67,21 +67,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'basepath' => '/cmf/articles',
                         ],
                     ],
-                    'stuff' => [
-                        'type' => 'composite',
-                        'options' => [
-                            'mounts' => [
-                                [
-                                    'repository' => 'content',
-                                    'mountpoint' => '/content',
-                                ],
-                                [
-                                    'repository' => 'articles',
-                                    'mountpoint' => '/articles',
-                                ],
-                            ],
-                        ],
-                    ],
                 ],
         ], $config);
     }

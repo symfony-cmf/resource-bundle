@@ -7,9 +7,3 @@ cmf_resource:
         articles:
             type: doctrine_phpcr_odm
             basepath: /cmf/articles
-
-        stuff:
-            type: composite
-            mounts:
-                - { repository: content, mountpoint: /content }
-                - { repository: articles, mountpoint: /articles }

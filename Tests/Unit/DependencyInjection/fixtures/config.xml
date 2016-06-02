@@ -12,19 +12,5 @@
         <repository name="articles" type="doctrine_phpcr_odm">
             <option name="basepath">/cmf/articles</option>
         </repository>
-
-        <repository name="stuff" type="composite">
-            <option name="mounts">
-                <collection>
-                    <option name="repository">content</option>
-                    <option name="mountpoint">/content</option>
-                </collection>
-
-                <collection>
-                    <option name="repository">articles</option>
-                    <option name="mountpoint">/articles</option>
-                </collection>
-            </option>
-        </repository>
     </config>
 </srv:container>
