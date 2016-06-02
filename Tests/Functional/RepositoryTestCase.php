@@ -11,8 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
-use PHPCR\SessionInterface;
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
@@ -22,35 +20,13 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 abstract class RepositoryTestCase extends BaseTestCase
 {
     /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
      * @var RepositoryRegistryInterface
      */
     protected $repositoryRegistry;
 
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    public function setUp()
+    protected function setUp()
     {
-        $this->dm = $this->db('PHPCR')->getOm();
-        $this->repositoryRegistry = $this->container->get('cmf_resource.registry');
-        $this->session = $this->getContainer()->get('doctrine_phpcr.session');
-
-        $this->db('PHPCR')->purgeRepository(true);
-
-        $this->session->getRootNode()->addNode('/test');
-        $rootNode = $this->session->getNode('/test');
-        $rootNode->addNode('/test/foo');
-        $rootNode->addNode('/test/bar');
-        $this->session->getNode('/test/foo')->addNode('/test/foo/child');
-
-        $this->session->save();
+        $this->repositoryRegistry = $this->getContainer()->get('cmf_resource.registry');
     }
 
     abstract protected function getRepository();

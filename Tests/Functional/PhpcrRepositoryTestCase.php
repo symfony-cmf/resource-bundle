@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
 use PHPCR\NodeInterface;
+use PHPCR\PathNotFoundException;
 
 /**
  * @author Maximilian Berghoff <Maximilian.Berghoff@mayflower.de>
@@ -19,9 +20,34 @@ use PHPCR\NodeInterface;
 abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
 {
     /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->session = $this->getContainer()->get('doctrine_phpcr.session');
+        $this->db('PHPCR')->purgeRepository(true);
+
+        $rootNode = $this->session->getRootNode();
+
+        // the resource repository is based at "/test"
+        $node = $rootNode->addNode('/test');
+
+        $sub1 = $node->addNode('node-1');
+        $sub1->addNode('node-1-1');
+        $sub1->addNode('node-1-2');
+        $node->addNode('node-2');
+
+        $this->session->save();
+    }
+
+    /**
      * @dataProvider provideGet
      */
-    public function testRepositoryGet($path, $expectedName)
+    public function testGet($path, $expectedName)
     {
         $res = $this->getRepository()->get($path);
         $this->assertNotNull($res);
@@ -33,43 +59,22 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
         );
     }
 
-    /**
-     * @dataProvider provideFind
-     */
-    public function testRepositoryFind($pattern, $nbResults)
-    {
-        $res = $this->getRepository()->find($pattern);
-        $this->assertCount($nbResults, $res);
-    }
-
-    /**
-     * @dataProvider provideMove
-     */
-    public function testRepositoryMove($sourcePath, $targetPath, $expectedNodeName)
-    {
-        $this->getRepository()->move($sourcePath, $targetPath);
-
-        $this->assertEquals($expectedNodeName, $this->session->getNode('/test'.$targetPath)->getName());
-    }
-
-    /**
-     * @dataProvider provideDelete
-     * @expectedException \PHPCR\PathNotFoundException
-     */
-    public function testRepositoryRemove($path, $expectedDeleted)
-    {
-        $this->getRepository()->remove($path);
-
-        $this->session->getNode($path);
-    }
-
     public function provideGet()
     {
         return [
-            ['/foo', 'foo'],
-            ['/bar', 'bar'],
+            ['/node-1', 'node-1'],
+            ['/node-2', 'node-2'],
             ['/', 'test'],
         ];
+    }
+
+    /**
+     * @dataProvider provideFind
+     */
+    public function testFind($pattern, $nbResults)
+    {
+        $res = $this->getRepository()->find($pattern);
+        $this->assertCount($nbResults, $res);
     }
 
     public function provideFind()
@@ -80,27 +85,63 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
         ];
     }
 
+    /**
+     * @dataProvider provideMove
+     */
+    public function testMove($sourcePath, $targetPath, $expectedPaths)
+    {
+        $expectedNbMoved = count($expectedPaths);
+
+        $nbMoved = $this->getRepository()->move($sourcePath, $targetPath);
+        $this->assertEquals($expectedNbMoved, $nbMoved);
+
+        foreach ($expectedPaths as $path) {
+            try {
+                $this->session->getNode($path);
+            } catch (\Exception $e) {
+                $this->fail(sprintf(
+                    'Could not find node at expected path: "%s": %s',
+                    $path, $e->getMessage()
+                ));
+            }
+        }
+    }
+
     public function provideMove()
     {
         return [
-            ['/foo', '/foo-bar', 'foo-bar'],
-            ['/foo', '/bar/foo', 'foo'],
+            ['/node-1', '/foo-bar', ['/test/foo-bar']],
+            ['/node-2', '/node-1/foo', ['/test/node-1/foo']],
+            ['/node-1/*', '/node-2', ['/test/node-2/node-1-1', '/test/node-2/node-1-2']],
         ];
     }
 
-    public function provideDelete()
+    /**
+     * @dataProvider provideRemove
+     */
+    public function testRemove($path, $expectedRemovedPaths)
     {
-        return [
-            ['/foo', 2],
-            ['/bar', 1],
-        ];
+        $expectedNbRemoved = count($expectedRemovedPaths);
+        $nbRemoved = $this->getRepository()->remove($path);
+        $this->assertEquals($expectedNbRemoved, $nbRemoved);
+
+        foreach ($expectedRemovedPaths as $path) {
+            try {
+                $this->session->getNode($path);
+                $this->fail('Node at "%s" still exists');
+            } catch (PathNotFoundException $e) {
+                // ok then.
+            }
+        }
     }
 
-    public function provideAdd()
+    public function provideRemove()
     {
         return [
-            ['/', 'blubb'],
-            ['/foo', 'blubb'],
+            ['/node-1', ['/test/node-1']],
+            ['/node-2', ['/test/node-2']],
+            ['/*', ['/test/node-1', '/test/node-2']],
+            ['/node-1/*', ['/test/node-1-1', '/test/node-1-2']],
         ];
     }
 }

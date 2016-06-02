@@ -9,12 +9,6 @@
             "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ElectricMaxxx/resource.git"
-        }
-    ],
     "minimum-stability": "dev",
     "require": {
         "php": "^5.5.9|^7.0",
