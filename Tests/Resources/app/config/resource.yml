@@ -11,9 +11,3 @@ cmf_resource:
         my_filesystem:
             type: filesystem
             base_dir: %kernel.root_dir%/../filesystem
-
-        stuff:
-            type: composite
-            mounts:
-                - { repository: test_repository, mountpoint: /content }
-                - { repository: articles, mountpoint: /articles }
