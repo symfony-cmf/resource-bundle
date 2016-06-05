@@ -53,7 +53,7 @@ class DescriptionEnhancerPass implements CompilerPassInterface
 
         if ($diff) {
             throw new InvalidArgumentException(sprintf(
-                'Unknown description enhancer(s) "%s", available enhancers: "%s"',
+                'Unknown description enhancer(s) "%s" were enabled, available enhancers: "%s"',
                 implode('", "', $diff),
                 implode('", "', $enhancerNames)
             ));

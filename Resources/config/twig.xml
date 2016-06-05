@@ -5,11 +5,10 @@
 
     <services>
 
-        <service id="cmf_resource.twig.extension.description" class="Symfony\Cmf\Bundle\ResourceBundle\Twig\DescriptionExtension">
+        <service id="cmf_resource.twig.extension.description" class="Symfony\Cmf\Bundle\ResourceBundle\Twig\DescriptionExtension" public="false">
             <argument type="service" id="cmf_resource.description.factory" />
             <tag name="twig.extension" />
         </service>
 
     </services>
 </container>
-

@@ -14,7 +14,8 @@
         "php": "^5.5.9|^7.0",
         "symfony/framework-bundle": "^2.7|3.*",
         "symfony/options-resolver": "^2.7|3.*",
-        "symfony-cmf/resource": "dev-admin_metadata"
+        "symfony-cmf/resource": "^1.0",
+        "puli/repository": "@beta"
     },
     "require-dev": {
         "symfony-cmf/testing": "^1.3",

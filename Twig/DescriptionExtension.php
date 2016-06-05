@@ -11,9 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Twig;
 
-use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
-use Puli\Repository\Api\ResourceRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Puli\Repository\Api\Resource\PuliResource;
 use Symfony\Cmf\Component\Resource\Description\DescriptionFactory;
 
@@ -24,19 +21,16 @@ class DescriptionExtension extends \Twig_Extension
 {
     private $descriptionFactory;
 
-    /**
-     */
-    public function __construct(
-        DescriptionFactory $descriptionFactory
-    ) {
+    public function __construct(DescriptionFactory $descriptionFactory)
+    {
         $this->descriptionFactory = $descriptionFactory;
     }
 
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('cmf_resource_description', array($this, 'getDescription')),
-        );
+        return [
+            new \Twig_SimpleFunction('cmf_resource_description', [$this, 'getDescription']),
+        ];
     }
 
     public function getDescription(PuliResource $resource)

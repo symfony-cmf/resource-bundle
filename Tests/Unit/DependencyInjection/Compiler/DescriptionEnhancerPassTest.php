@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 {
+    private $container;
+    private $factoryDefinition;
+    private $pass;
+
     public function setUp()
     {
         $this->container = $this->prophesize(ContainerBuilder::class);
@@ -28,16 +32,12 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should return early if the factory does not exist.
-     *
-     * TODO: WHY????
      */
     public function testReturnEarlyFactoryNotExist()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(false);
+        $this->container->has('cmf_resource.description.factory')->willReturn(false);
+        $this->container->getParameter(Argument::cetera())->shouldNotBeCalled();
         $this->pass->process($this->container->reveal());
-        $this->container->getParameter(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
     /**
@@ -45,9 +45,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddDescriptionEnhancers()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(true);
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'enhancer_1',
         ]);
@@ -69,9 +67,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasNoAlias()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(true);
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'enhancer_1',
         ]);
@@ -90,9 +86,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testDuplicatedAlias()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(true);
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'enhancer_1',
         ]);
@@ -108,13 +102,11 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if an unknown enhancer is enabled.
      *
      * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown description enhancer(s) "three", available enhancers: "one", "two"
+     * @expectedExceptionMessage Unknown description enhancer(s) "three" were enabled, available enhancers: "one", "two"
      */
     public function testUnknownEnhancer()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(true);
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'three',
         ]);
@@ -131,9 +123,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveInactive()
     {
-        $this->container->has(
-            'cmf_resource.description.factory'
-        )->willReturn(true);
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'one',
         ]);
