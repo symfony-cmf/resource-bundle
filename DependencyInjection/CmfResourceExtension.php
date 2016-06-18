@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
@@ -41,10 +40,9 @@ class CmfResourceExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
-        $configuration = new Configuration();
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $config = $processor->processConfiguration($configuration, $configs);
         $loader->load('resource.xml');
         $loader->load('description.xml');
         $loader->load('twig.xml');
