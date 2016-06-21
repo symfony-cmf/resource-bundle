@@ -15,6 +15,15 @@
             <tag name="cmf_resource.description.enhancer" alias="sonata_admin" />
         </service>
 
+        <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Doctrine\PhpcrOdm\PhpcrOdmEnhancer" public="false">
+            <argument type="service" id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" />
+            <tag name="cmf_resource.description.enhancer" alias="doctrine_phpcr_odm" />
+        </service>
+
+        <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" class="Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory" public="false">
+            <factory service="doctrine_phpcr.odm.document_manager" method="getMetadataFactory" />
+        </service>
+
         <service id="cmf_resource.description.enhancer.sylius_resource" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Sylius\ResourceEnhancer" public="false">
             <argument type="service" id="sylius.resource_registry" />
             <argument type="service" id="request_stack" />

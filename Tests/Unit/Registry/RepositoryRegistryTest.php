@@ -102,11 +102,11 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->assertEquals([ 'test', 'tset' ], $registry->names());
+        $this->assertEquals(['test', 'tset'], $registry->names());
     }
 
     /**
-     * It should return all registered repositories
+     * It should return all registered repositories.
      */
     public function testAll()
     {
