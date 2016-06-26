@@ -1,7 +1,11 @@
 cmf_resource:
     repositories:
-        test_repository:
+        test_repository_phpcr_odm:
             type: doctrine_phpcr_odm
+            basepath: /test
+
+        test_repository_phpcr:
+            type: doctrine_phpcr
             basepath: /test
 
         articles:

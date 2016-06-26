@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
+class PhpcrRepositoryTest extends PhpcrRepositoryTestCase
 {
     protected function getRepository()
     {
-        return $this->repositoryRegistry->get('test_repository_phpcr_odm');
+        return $this->repositoryRegistry->get('test_repository_phpcr');
     }
 }
