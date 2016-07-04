@@ -46,6 +46,27 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     /**
      * {@inheritdoc}
      */
+    public function names()
+    {
+        return array_keys($this->serviceMap);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function all()
+    {
+        $repositories = [];
+        foreach (array_keys($this->serviceMap) as $name) {
+            $repositories[$name] = $this->get($name);
+        }
+
+        return $repositories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function get($repositoryName)
     {
         if (!isset($this->serviceMap[$repositoryName])) {
