@@ -90,6 +90,39 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         $registry->getRepositoryType($repository->reveal());
     }
 
+    /**
+     * It should return the names of registered repositories.
+     */
+    public function testNames()
+    {
+        $registry = $this->createRegistry(
+            [
+                'test' => 'test_repository',
+                'tset' => 'tset_repository',
+            ]
+        );
+
+        $this->assertEquals([ 'test', 'tset' ], $registry->names());
+    }
+
+    /**
+     * It should return all registered repositories
+     */
+    public function testAll()
+    {
+        $registry = $this->createRegistry(
+            [
+                'test' => 'test_repository',
+                'tset' => 'tset_repository',
+            ]
+        );
+
+        $all = $registry->all();
+        $this->assertCount(2, $all);
+        $this->assertInstanceOf(ResourceRepository::class, $all['test']);
+        $this->assertInstanceOf(ResourceRepository::class, $all['tset']);
+    }
+
     private function createRegistry(array $serviceMap)
     {
         $typeMap = [];
