@@ -119,6 +119,55 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * It should throw an exception if an invalid tag attributes is used.
+     *
+     * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unknown tag attributes "foobar" for service "service_1", valid attributes: "name", "alias", "priority
+     */
+    public function testInvalidAttribute()
+    {
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
+        $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
+            'service_1',
+        ]);
+        $this->container->findTaggedServiceIds('cmf_resource.description.enhancer')->willReturn([
+            'service_1' => [['alias' => 'one', 'foobar' => 'barfoo']],
+        ]);
+
+        $this->pass->process($this->container->reveal());
+    }
+
+    /**
+     * It should sort description enhancers.
+     */
+    public function testSortDescriptionEnhancers()
+    {
+        $this->container->has('cmf_resource.description.factory')->willReturn(true);
+        $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
+            'enhancer_1',
+            'enhancer_2',
+            'enhancer_3',
+            'enhancer_4',
+        ]);
+        $this->container->findTaggedServiceIds('cmf_resource.description.enhancer')->willReturn([
+            'service_1' => [['alias' => 'enhancer_1']],
+            'service_2' => [['alias' => 'enhancer_2', 'priority' => 255]],
+            'service_3' => [['alias' => 'enhancer_3', 'priority' => -250]],
+            'service_4' => [['alias' => 'enhancer_4', 'priority' => -255]],
+        ]);
+
+        $this->container->getDefinition('cmf_resource.description.factory')->willReturn($this->factoryDefinition->reveal());
+        $this->factoryDefinition->replaceArgument(0, [
+            new Reference('service_2'),
+            new Reference('service_1'),
+            new Reference('service_4'),
+            new Reference('service_3'),
+        ])->shouldBeCalled();
+
+        $this->pass->process($this->container->reveal());
+    }
+
+    /**
      * It should remove inactive enhancers.
      */
     public function testRemoveInactive()
@@ -133,7 +182,6 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->container->getDefinition('cmf_resource.description.factory')->willReturn($this->factoryDefinition->reveal());
 
-        $this->container->removeDefinition('service_2')->shouldBeCalled();
         $this->factoryDefinition->replaceArgument(0, [new Reference('service_1')])->shouldBeCalled();
 
         $this->pass->process($this->container->reveal());

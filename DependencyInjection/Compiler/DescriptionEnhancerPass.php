@@ -26,16 +26,26 @@ class DescriptionEnhancerPass implements CompilerPassInterface
 
         $taggedIds = $container->findTaggedServiceIds('cmf_resource.description.enhancer');
         $enabledEnhancers = $container->getParameter('cmf_resource.description.enabled_enhancers');
+        $validAttributes = ['name', 'alias', 'priority'];
 
         foreach ($taggedIds as $serviceId => $attributes) {
-            if (!isset($attributes[0]['alias'])) {
+            $attributes = $attributes[0];
+
+            if ($diff = array_diff(array_keys($attributes), $validAttributes)) {
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown tag attributes "%s" for service "%s", valid attributes: "%s"',
+                    implode('", "', $diff), $serviceId, implode('", "', $validAttributes)
+                ));
+            }
+
+            if (!isset($attributes['alias'])) {
                 throw new InvalidArgumentException(sprintf(
                     'Resource enhancer "%s" has no "alias" attribute in its tag',
                     $serviceId
                 ));
             }
 
-            $name = $attributes[0]['alias'];
+            $name = $attributes['alias'];
 
             if (isset($enhancers[$name])) {
                 throw new InvalidArgumentException(sprintf(
@@ -45,7 +55,8 @@ class DescriptionEnhancerPass implements CompilerPassInterface
                 ));
             }
 
-            $enhancers[$name] = new Reference($serviceId);
+            $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+            $enhancers[$name] = [$priority, new Reference($serviceId)];
         }
 
         $enhancerNames = array_keys($enhancers);
@@ -61,9 +72,17 @@ class DescriptionEnhancerPass implements CompilerPassInterface
 
         $inactiveEnhancers = array_diff($enhancerNames, $enabledEnhancers);
         foreach ($inactiveEnhancers as $inactiveEnhancer) {
-            $container->removeDefinition((string) $enhancers[$inactiveEnhancer]);
             unset($enhancers[$inactiveEnhancer]);
         }
+
+        // sort enhancers, higher = more priority
+        usort($enhancers, function ($a, $b) {
+            return -strcmp($a[0], $b[0]);
+        });
+
+        $enhancers = array_map(function ($enhancer) {
+            return $enhancer[1];
+        }, $enhancers);
 
         $registryDef = $container->getDefinition('cmf_resource.description.factory');
         $registryDef->replaceArgument(0, array_values($enhancers));
