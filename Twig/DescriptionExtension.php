@@ -11,7 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Twig;
 
-use Puli\Repository\Api\Resource\PuliResource;
+use Symfony\Cmf\Component\Resource\Puli\Api\PuliResource;
 use Symfony\Cmf\Component\Resource\Description\DescriptionFactory;
 
 /**

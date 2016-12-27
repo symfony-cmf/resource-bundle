@@ -17,6 +17,7 @@ class FilesystemRepositoryTest extends BaseTestCase
 {
     public function setUp()
     {
+        $this->markTestSkipped('Puli Filesystem is not available.');
         $this->repositoryRegistry = $this->getContainer()->get('cmf_resource.registry');
     }
 

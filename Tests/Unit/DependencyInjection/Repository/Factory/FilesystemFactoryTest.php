@@ -16,6 +16,11 @@ use Puli\Repository\FilesystemRepository;
 
 class FilesystemFactoryTest extends FactoryTestCase
 {
+    protected function setUp()
+    {
+        $this->markTestSkipped('Puli Filesystem is not available.');
+    }
+
     /**
      * It should add a repository to the container.
      * It should configure the base dir.

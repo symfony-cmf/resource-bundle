@@ -11,7 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\Registry;
 
-use Puli\Repository\Api\ResourceRepository;
+use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
 use Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

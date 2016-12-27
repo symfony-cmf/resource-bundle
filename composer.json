@@ -9,18 +9,18 @@
             "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^5.5.9|^7.0",
         "symfony/framework-bundle": "^2.7|3.*",
         "symfony/options-resolver": "^2.7|3.*",
-        "symfony-cmf/resource": "^1.0",
-        "puli/repository": "@beta"
+        "symfony-cmf/resource": "dev-include-puli as 1.0.0"
     },
     "require-dev": {
         "symfony-cmf/testing": "^1.3|^2.0",
         "doctrine/phpcr-odm": "^1.2|^2.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.2)",
         "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents"
