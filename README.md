@@ -27,7 +27,7 @@ provide the context with which to resolve the documents.
 
 ## Requirements 
 
-* Symfony 2.2.x
+* Symfony 2.8+
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
