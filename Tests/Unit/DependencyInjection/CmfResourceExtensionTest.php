@@ -11,15 +11,15 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
-use Symfony\Component\DependencyInjection\Definition;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\RepositoryFactoryInterface;
+use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
-use Puli\Repository\Api\ResourceRepository;
 
 class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 {

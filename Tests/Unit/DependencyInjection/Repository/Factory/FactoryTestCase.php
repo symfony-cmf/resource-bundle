@@ -18,7 +18,7 @@ abstract class FactoryTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $resolver;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->resolver = new OptionsResolver();
     }

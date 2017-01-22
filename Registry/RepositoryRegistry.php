@@ -12,7 +12,7 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
-use Puli\Repository\Api\ResourceRepository;
+use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
