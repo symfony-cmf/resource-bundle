@@ -34,7 +34,7 @@ class DoctrinePhpcrOdmFactory implements RepositoryFactoryInterface
      */
     public function getName()
     {
-        return 'doctrine_phpcr_odm';
+        return 'doctrine/phpcr-odm';
     }
 
     /**

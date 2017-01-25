@@ -33,7 +33,7 @@ class FilesystemFactory implements RepositoryFactoryInterface
      */
     public function getName()
     {
-        return 'filesystem';
+        return 'puli/filesystem';
     }
 
     /**
