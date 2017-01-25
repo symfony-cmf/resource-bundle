@@ -27,20 +27,24 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     private $serviceMap = [];
     private $typeMap = [];
     private $names = [];
+    private $defaultRepositoryName;
 
     /**
      * @param ContainerInterface $container
      * @param array              $serviceMap
      * @param array              $typeMap
+     * @param string             $defaultRepositoryName
      */
     public function __construct(
         ContainerInterface $container,
         array $serviceMap,
-        array $typeMap
+        array $typeMap,
+        $defaultRepositoryName
     ) {
         $this->container = $container;
         $this->serviceMap = $serviceMap;
         $this->typeMap = $typeMap;
+        $this->defaultRepositoryName = $defaultRepositoryName;
     }
 
     /**
@@ -67,9 +71,9 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($repositoryName)
+    public function get($repositoryName = null)
     {
-        if (!isset($this->serviceMap[$repositoryName])) {
+        if (!isset($this->serviceMap[$repositoryName ?: $defaultRepositoryName])) {
             throw new \InvalidArgumentException(sprintf(
                 'Repository "%s" has not been registered, available repositories: "%s".',
                 $repositoryName,
@@ -86,7 +90,7 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getRepositoryAlias(ResourceRepository $repository)
+    public function getRepositoryName(ResourceRepository $repository)
     {
         $hash = spl_object_hash($repository);
         if (isset($this->names[$hash])) {

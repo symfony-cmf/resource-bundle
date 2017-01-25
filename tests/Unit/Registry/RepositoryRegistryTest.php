@@ -41,7 +41,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 
         $repository = $registry->get('test');
         $this->assertInstanceOf(ResourceRepository::class, $repository);
-        $this->assertEquals('test', $registry->getRepositoryAlias($repository));
+        $this->assertEquals('test', $registry->getRepositoryName($repository));
         $this->assertEquals('test/type', $registry->getRepositoryType($repository));
     }
 
@@ -63,17 +63,17 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * It should throw an exception if an alias is requested for an unknown repository.
+     * It should throw an exception if an name is requested for an unknown repository.
      *
      * @expectedException \RuntimeException
      * @expectedExceptionMessage I don't know what its name is
      */
-    public function testGetAliasUnknownRepository()
+    public function testGetNameUnknownRepository()
     {
         $registry = $this->createRegistry([]);
 
         $repository = $this->prophesize(ResourceRepository::class);
-        $registry->getRepositoryAlias($repository->reveal());
+        $registry->getRepositoryName($repository->reveal());
     }
 
     /**
@@ -138,7 +138,8 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         return new RepositoryRegistry(
             $this->container,
             $serviceMap,
-            $typeMap
+            $typeMap,
+            'default'
         );
     }
 }

@@ -100,6 +100,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end() // repositories
+                ->scalarNode('default_repository')->defaultValue('default')->end()
             ->end();
 
         return $treeBuilder;

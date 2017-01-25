@@ -71,6 +71,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ],
+            'default_repository' => 'default',
         ], $config);
     }
 }

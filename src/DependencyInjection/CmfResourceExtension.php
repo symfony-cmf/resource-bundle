@@ -48,10 +48,11 @@ class CmfResourceExtension extends Extension
         $loader->load('twig.xml');
         $container->setParameter('cmf_resource.description.enabled_enhancers', $config['description']['enhancers']);
 
-        $this->loadRepositories($container, $config['repositories']);
+        $container->setParameter('cmf_resource.repositories.default_name', $config['default_repository']);
+        $this->loadRepositories($container, $config['repositories'], $config['default_repository']);
     }
 
-    private function loadRepositories(ContainerBuilder $container, array $configs)
+    private function loadRepositories(ContainerBuilder $container, array $configs, $defaultRepositoryName)
     {
         $repositoryTypes = array_keys($this->repositoryFactories);
         $typeMap = [];
@@ -87,6 +88,9 @@ class CmfResourceExtension extends Extension
             $serviceMap[$repositoryName] = $serviceId;
 
             $container->setDefinition($serviceId, $definition);
+            if ($defaultRepositoryName == $repositoryName) {
+                $container->setAlias('cmf_resource.repository', $serviceId);
+            }
         }
 
         $registry = $container->getDefinition('cmf_resource.registry');
