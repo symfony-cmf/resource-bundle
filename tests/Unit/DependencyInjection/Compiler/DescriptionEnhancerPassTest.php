@@ -62,7 +62,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if the tag does not have the "alias" key.
      *
-     * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      * @expectedExceptionMessage has no "alias" attribute
      */
     public function testHasNoAlias()
@@ -81,7 +81,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if two tags have the same alias.
      *
-     * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      * @expectedExceptionMessage has already been registered
      */
     public function testDuplicatedAlias()
@@ -101,7 +101,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if an unknown enhancer is enabled.
      *
-     * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown description enhancer(s) "three" were enabled, available enhancers: "one", "two"
      */
     public function testUnknownEnhancer()
@@ -121,7 +121,7 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if an invalid tag attributes is used.
      *
-     * @expectedException Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
      * @expectedExceptionMessage Unknown tag attributes "foobar" for service "service_1", valid attributes: "name", "alias", "priority
      */
     public function testInvalidAttribute()
