@@ -73,7 +73,11 @@ class RepositoryRegistry implements RepositoryRegistryInterface
      */
     public function get($repositoryName = null)
     {
-        if (!isset($this->serviceMap[$repositoryName ?: $defaultRepositoryName])) {
+        if (null === $repositoryName) {
+            $repositoryName = $this->defaultRepositoryName;
+        }
+
+        if (!isset($this->serviceMap[$repositoryName])) {
             throw new \InvalidArgumentException(sprintf(
                 'Repository "%s" has not been registered, available repositories: "%s".',
                 $repositoryName,

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 
-class DoctrinePhpcrFactory implements RepositoryFactoryInterface
+class PhpcrFactory implements RepositoryFactoryInterface
 {
     /**
      * {@inheritdoc}
@@ -34,7 +34,7 @@ class DoctrinePhpcrFactory implements RepositoryFactoryInterface
      */
     public function getName()
     {
-        return 'doctrine_phpcr';
+        return 'phpcr/phpcr';
     }
 
     /**

@@ -11,12 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repository\Factory;
 
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\PhpcrFactory;
 use PHPCR\SessionInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 use PHPCR\NodeInterface;
 
-class DoctrinePhpcrFactoryTest extends FactoryTestCase
+class PhpcrFactoryTest extends FactoryTestCase
 {
     private $session;
 
@@ -62,6 +62,6 @@ class DoctrinePhpcrFactoryTest extends FactoryTestCase
 
     protected function getFactory()
     {
-        return new DoctrinePhpcrFactory();
+        return new PhpcrFactory();
     }
 }
