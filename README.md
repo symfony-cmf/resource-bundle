@@ -1,6 +1,7 @@
 # Symfony CMF Resource Bundle
 
 [![Build Status](https://travis-ci.org/symfony-cmf/resource-bundle.svg?branch=master)](https://travis-ci.org/symfony-cmf/resource-bundle)
+[![StyleCI](https://styleci.io/repos/26688804/shield)](https://styleci.io/repos/26688804)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/resource-bundle/version.png)](https://packagist.org/packages/symfony-cmf/resource-bundle)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/resource-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/resource-bundle)
 
