@@ -9,15 +9,9 @@
             <argument /> <!-- enhancers -->
         </service>
 
-        <service id="cmf_resource.description.enhancer.sonata_admin" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Sonata\AdminEnhancer" public="false">
-            <argument type="service" id="sonata_admin.pool" />
-            <argument type="service" id="router" />
-            <tag name="cmf_resource.description.enhancer" alias="sonata_admin" />
-        </service>
-
         <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Doctrine\PhpcrOdmEnhancer" public="false">
             <argument type="service" id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" />
-            <tag name="cmf_resource.description.enhancer" alias="doctrine_phpcr_odm" />
+            <tag namke="cmf_resource.description.enhancer" alias="doctrine_phpcr_odm" />
         </service>
 
         <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" class="Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory" public="false">
