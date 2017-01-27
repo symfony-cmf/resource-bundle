@@ -11,7 +11,7 @@
 
         <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm" class="Symfony\Cmf\Component\Resource\Description\Enhancer\Doctrine\PhpcrOdmEnhancer" public="false">
             <argument type="service" id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" />
-            <tag namke="cmf_resource.description.enhancer" alias="doctrine_phpcr_odm" />
+            <tag name="cmf_resource.description.enhancer" alias="doctrine_phpcr_odm" />
         </service>
 
         <service id="cmf_resource.description.enhancer.doctrine.phpcr_odm.metadata_factory" class="Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory" public="false">
