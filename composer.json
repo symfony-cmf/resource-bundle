@@ -20,7 +20,7 @@
         "symfony/phpunit-bridge": "^3.2",
         "doctrine/phpcr-odm": "^1.3"
     },
-    "minimum-stability": "RC",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.3)",
