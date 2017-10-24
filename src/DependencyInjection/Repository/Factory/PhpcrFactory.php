@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PhpcrFactory implements RepositoryFactoryInterface
 {

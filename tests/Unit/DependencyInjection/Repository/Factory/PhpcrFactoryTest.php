@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repository\Factory;
 
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\PhpcrFactory;
-use PHPCR\SessionInterface;
-use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 use PHPCR\NodeInterface;
+use PHPCR\SessionInterface;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\PhpcrFactory;
+use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 
 class PhpcrFactoryTest extends FactoryTestCase
 {

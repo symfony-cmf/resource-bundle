@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\DependencyInjection\Definition;
 use Puli\Repository\FilesystemRepository;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilesystemFactory implements RepositoryFactoryInterface
 {

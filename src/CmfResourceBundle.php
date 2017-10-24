@@ -11,12 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\FilesystemFactory;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\PhpcrFactory;
-use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\DescriptionEnhancerPass;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
+use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\PhpcrFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CmfResourceBundle extends Bundle
 {

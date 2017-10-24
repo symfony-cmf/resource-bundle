@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\Twig;
 
+use Symfony\Cmf\Bundle\ResourceBundle\Twig\DescriptionExtension;
+use Symfony\Cmf\Component\Resource\Description\Description;
 use Symfony\Cmf\Component\Resource\Description\DescriptionFactory;
 use Symfony\Cmf\Component\Resource\Repository\Resource\CmfResource;
-use Symfony\Cmf\Component\Resource\Description\Description;
-use Symfony\Cmf\Bundle\ResourceBundle\Twig\DescriptionExtension;
 
 class DescriptionExtensionTest extends \PHPUnit_Framework_TestCase
 {

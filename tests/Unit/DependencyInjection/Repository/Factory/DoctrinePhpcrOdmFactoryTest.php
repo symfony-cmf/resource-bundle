@@ -13,8 +13,8 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repos
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Repository\Factory\DoctrinePhpcrOdmFactory;
+use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 
 class DoctrinePhpcrOdmFactoryTest extends FactoryTestCase
 {
