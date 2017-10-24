@@ -20,7 +20,7 @@ This bundle provides *object* resource location services based on Puli.
 Examples:
 
 - **Static document path mapping**: Map the path `/routes` to `/cms/routes`
-- **Dynamic document resolution**: Map the path `/routes` to `/cms/&lt;current site&gt;/routes`.
+- **Dynamic document resolution**: Map the path `/routes` to `/cms/<current site>/routes`.
 - **Access documents at a static location**: Map `/role/menu/main` to `/cms/menus/main-menu`.
 
 The first example could use the existing CMF base route configuration to
