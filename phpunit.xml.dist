@@ -6,7 +6,7 @@
     >
 
     <testsuites>
-        <testsuite name="CmfResourceBundle Test Suite">
+        <testsuite name="unit tests">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
