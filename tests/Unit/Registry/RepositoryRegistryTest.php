@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\Registry;
 
-use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
 use Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry;
+use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase

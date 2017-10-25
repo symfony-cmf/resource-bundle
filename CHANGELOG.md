@@ -1,6 +1,9 @@
 Changelog
 =========
 
+
+* **2017-10-24**: Dropped hhvm support
+
 1.0.0
 -----
 

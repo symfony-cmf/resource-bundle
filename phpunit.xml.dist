@@ -6,8 +6,12 @@
     >
 
     <testsuites>
-        <testsuite name="CmfResourceBundle Test Suite">
-            <directory>./tests</directory>
+        <testsuite name="unit tests">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+
+        <testsuite name="functional tests with phpcr">
+            <directory>./tests/Functional</directory>
         </testsuite>
     </testsuites>
 
