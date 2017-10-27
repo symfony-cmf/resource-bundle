@@ -11,16 +11,17 @@
     ],
     "require": {
         "php": "^5.6|^7.0",
-        "symfony/framework-bundle": "^2.8|^3.0",
-        "symfony/options-resolver": "^2.8|^3.0",
-        "symfony-cmf/resource": "^1.0"
+        "symfony/framework-bundle": "^2.8|^3.3",
+        "symfony/options-resolver": "^2.8|^3.3",
+        "symfony-cmf/resource": "^1.0",
+        "symfony/symfony": "^3.4@dev"
     },
     "require-dev": {
         "symfony-cmf/testing": "^2.1@dev",
         "symfony/phpunit-bridge": "^3.2",
-        "doctrine/phpcr-odm": "^1.3"
+        "doctrine/phpcr-odm": "^1.4|^2.0"
     },
-    "minimum-stability": "stable",
+    "minimum-stability":"dev",
     "prefer-stable": true,
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.3)",
@@ -30,7 +31,10 @@
         "psr-4": { "Symfony\\Cmf\\Bundle\\ResourceBundle\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Symfony\\Cmf\\Bundle\\ResourceBundle\\Tests\\": "tests/" }
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\ResourceBundle\\Tests\\": "tests/",
+            "Symfony\\Cmf\\Bundle\\ResourceBundle\\Tests\\App\\": "tests/Resources/app"
+        }
     },
     "extra": {
         "branch-alias": {
