@@ -7,7 +7,7 @@
 
         <service id="cmf_resource.finder.selector.parser" class="Symfony\Cmf\Component\Resource\Finder\SelectorParser" public="false" />
 
-        <service id="cmf_resource.registry" class="Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry">
+        <service id="cmf_resource.registry" class="Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry" public="true">
             <argument type="service" id="service_container"/>
             <argument /> <!-- service map -->
             <argument /> <!-- type map -->

@@ -84,6 +84,7 @@ class CmfResourceExtension extends Extension
 
             $serviceId = self::getRepositoryServiceId($repositoryName);
             $definition = $factory->create($config);
+            $definition->setPublic(true);
             $typeMap[$definition->getClass()] = $type;
             $serviceMap[$repositoryName] = $serviceId;
 
