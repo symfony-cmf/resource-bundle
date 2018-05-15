@@ -24,9 +24,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RepositoryRegistry implements RepositoryRegistryInterface
 {
     private $container;
+
     private $serviceMap = [];
+
     private $typeMap = [];
+
     private $names = [];
+
     private $defaultRepositoryName;
 
     /**
