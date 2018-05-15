@@ -20,7 +20,9 @@ use Symfony\Component\DependencyInjection\Reference;
 class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 {
     private $container;
+
     private $factoryDefinition;
+
     private $pass;
 
     public function setUp()

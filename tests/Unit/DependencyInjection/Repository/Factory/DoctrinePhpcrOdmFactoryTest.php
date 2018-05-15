@@ -19,6 +19,7 @@ use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 class DoctrinePhpcrOdmFactoryTest extends FactoryTestCase
 {
     private $session;
+
     private $manager;
 
     public function setUp()
