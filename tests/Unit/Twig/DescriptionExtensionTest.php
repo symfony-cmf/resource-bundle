@@ -19,6 +19,7 @@ use Symfony\Cmf\Component\Resource\Repository\Resource\CmfResource;
 class DescriptionExtensionTest extends \PHPUnit_Framework_TestCase
 {
     private $descriptionFactory;
+
     private $twig;
 
     public function setUp()

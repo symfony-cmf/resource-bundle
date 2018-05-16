@@ -24,7 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 {
     private $container;
+
     private $extension;
+
     private $repositoryFactory;
 
     public function setUp()

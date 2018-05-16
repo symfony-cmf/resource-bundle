@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 {
     private $repository;
+
     private $container;
 
     public function setUp()
