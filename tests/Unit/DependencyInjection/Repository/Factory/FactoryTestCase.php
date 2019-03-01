@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +16,7 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection\Repos
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-abstract class FactoryTestCase extends \PHPUnit_Framework_TestCase
+abstract class FactoryTestCase extends \PHPUnit\Framework\TestCase
 {
     protected $resolver;
 

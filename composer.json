@@ -18,7 +18,7 @@
     "require-dev": {
         "symfony-cmf/testing": "^2.1.8",
         "symfony/phpunit-bridge": "^4.2.2",
-        "doctrine/phpcr-odm": "^1.4|^2.0"
+        "doctrine/phpcr-odm": "^1.4 || ^2.0"
     },
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.3)",

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -107,7 +109,7 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
         $this->baseNode->addNode('node-2');
         $this->session->save();
 
-        $expectedNbMoved = count($expectedPaths);
+        $expectedNbMoved = \count($expectedPaths);
 
         $nbMoved = $this->getRepository()->move($sourcePath, $targetPath);
         $this->assertEquals($expectedNbMoved, $nbMoved);
@@ -144,7 +146,7 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
         $this->baseNode->addNode('node-2');
         $this->session->save();
 
-        $expectedNbRemoved = count($expectedRemovedPaths);
+        $expectedNbRemoved = \count($expectedRemovedPaths);
         $nbRemoved = $this->getRepository()->remove($path);
         $this->assertEquals($expectedNbRemoved, $nbRemoved);
 
@@ -199,12 +201,12 @@ abstract class PhpcrRepositoryTestCase extends RepositoryTestCase
 
     /**
      * It should throw an exception if the reorder index is less than zero.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Reorder position cannot be negative, got: -5
      */
     public function testReorderNegative()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Reorder position cannot be negative, got: -5');
+
         $this->getRepository()->reorder('/foo', -5);
     }
 }

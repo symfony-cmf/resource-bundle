@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
+class DescriptionEnhancerPassTest extends \PHPUnit\Framework\TestCase
 {
     private $container;
 
@@ -63,12 +65,12 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if the tag does not have the "alias" key.
-     *
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage has no "alias" attribute
      */
     public function testHasNoAlias()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('has no "alias" attribute');
+
         $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'enhancer_1',
@@ -82,12 +84,12 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if two tags have the same alias.
-     *
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage has already been registered
      */
     public function testDuplicatedAlias()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('has already been registered');
+
         $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'enhancer_1',
@@ -102,12 +104,12 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if an unknown enhancer is enabled.
-     *
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown description enhancer(s) "three" were enabled, available enhancers: "one", "two"
      */
     public function testUnknownEnhancer()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown description enhancer(s) "three" were enabled, available enhancers: "one", "two"');
+
         $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'three',
@@ -122,12 +124,12 @@ class DescriptionEnhancerPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if an invalid tag attributes is used.
-     *
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown tag attributes "foobar" for service "service_1", valid attributes: "name", "alias", "priority
      */
     public function testInvalidAttribute()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown tag attributes "foobar" for service "service_1", valid attributes: "name", "alias", "priority');
+
         $this->container->has('cmf_resource.description.factory')->willReturn(true);
         $this->container->getParameter('cmf_resource.description.enabled_enhancers')->willReturn([
             'service_1',

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -52,6 +54,19 @@ class CmfResourceExtension extends Extension
         $this->loadRepositories($container, $config['repositories'], $config['default_repository']);
     }
 
+    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
+    {
+        $this->repositoryFactories[$name] = $factory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/cmf_resource';
+    }
+
     private function loadRepositories(ContainerBuilder $container, array $configs, $defaultRepositoryName)
     {
         $repositoryTypes = array_keys($this->repositoryFactories);
@@ -97,18 +112,5 @@ class CmfResourceExtension extends Extension
         $registry = $container->getDefinition('cmf_resource.registry');
         $registry->replaceArgument(1, $serviceMap);
         $registry->replaceArgument(2, $typeMap);
-    }
-
-    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
-    {
-        $this->repositoryFactories[$name] = $factory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://cmf.symfony.com/schema/dic/cmf_resource';
     }
 }

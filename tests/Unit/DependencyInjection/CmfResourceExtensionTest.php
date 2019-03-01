@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +23,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
+class CmfResourceExtensionTest extends \PHPUnit\Framework\TestCase
 {
     private $container;
 
@@ -37,7 +39,7 @@ class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 
         $repository = $this->prophesize(ResourceRepository::class);
         $this->extension->addRepositoryFactory('foobar', $this->repositoryFactory->reveal());
-        $this->repositoryFactory->create([])->willReturn(new Definition(get_class($repository->reveal())));
+        $this->repositoryFactory->create([])->willReturn(new Definition(\get_class($repository->reveal())));
         $this->repositoryFactory->configure(Argument::type(OptionsResolver::class))->willReturn(null);
     }
 
@@ -66,12 +68,12 @@ class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Repositories: It should throw an exception if an unknown type is specified.
-     *
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Unknown repository type "bar", known repository types: "foobar"
      */
     public function testConfigRepositoryNoType()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown repository type "bar", known repository types: "foobar"');
+
         $this->extension->load([
             [
                 'repositories' => [
