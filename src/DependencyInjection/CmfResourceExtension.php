@@ -44,7 +44,7 @@ class CmfResourceExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('resource.xml');
         $loader->load('description.xml');
         $loader->load('twig.xml');
@@ -76,11 +76,13 @@ class CmfResourceExtension extends Extension
             $type = $config['type'];
 
             if (!isset($this->repositoryFactories[$type])) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown repository type "%s", known repository types: "%s"',
-                    $type,
-                    implode('", "', $repositoryTypes)
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Unknown repository type "%s", known repository types: "%s"',
+                        $type,
+                        implode('", "', $repositoryTypes)
+                    )
+                );
             }
 
             $factory = $this->repositoryFactories[$type];
@@ -91,10 +93,14 @@ class CmfResourceExtension extends Extension
             try {
                 $config = $optionsResolver->resolve($config['options']);
             } catch (\Exception $e) {
-                throw new InvalidArgumentException(sprintf(
-                    'Invalid configuration for repository "%s"',
-                    $repositoryName
-                ), null, $e);
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Invalid configuration for repository "%s"',
+                        $repositoryName
+                    ),
+                    0,
+                    $e
+                );
             }
 
             $serviceId = self::getRepositoryServiceId($repositoryName);
