@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -52,6 +54,19 @@ class CmfResourceExtension extends Extension
         $this->loadRepositories($container, $config['repositories'], $config['default_repository']);
     }
 
+    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
+    {
+        $this->repositoryFactories[$name] = $factory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/cmf_resource';
+    }
+
     private function loadRepositories(ContainerBuilder $container, array $configs, $defaultRepositoryName)
     {
         $repositoryTypes = array_keys($this->repositoryFactories);
@@ -61,11 +76,13 @@ class CmfResourceExtension extends Extension
             $type = $config['type'];
 
             if (!isset($this->repositoryFactories[$type])) {
-                throw new InvalidArgumentException(sprintf(
-                    'Unknown repository type "%s", known repository types: "%s"',
-                    $type,
-                    implode('", "', $repositoryTypes)
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Unknown repository type "%s", known repository types: "%s"',
+                        $type,
+                        implode('", "', $repositoryTypes)
+                    )
+                );
             }
 
             $factory = $this->repositoryFactories[$type];
@@ -76,10 +93,14 @@ class CmfResourceExtension extends Extension
             try {
                 $config = $optionsResolver->resolve($config['options']);
             } catch (\Exception $e) {
-                throw new InvalidArgumentException(sprintf(
-                    'Invalid configuration for repository "%s"',
-                    $repositoryName
-                ), null, $e);
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Invalid configuration for repository "%s"',
+                        $repositoryName
+                    ),
+                    0,
+                    $e
+                );
             }
 
             $serviceId = self::getRepositoryServiceId($repositoryName);
@@ -97,18 +118,5 @@ class CmfResourceExtension extends Extension
         $registry = $container->getDefinition('cmf_resource.registry');
         $registry->replaceArgument(1, $serviceMap);
         $registry->replaceArgument(2, $typeMap);
-    }
-
-    public function addRepositoryFactory($name, RepositoryFactoryInterface $factory)
-    {
-        $this->repositoryFactories[$name] = $factory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return 'http://cmf.symfony.com/schema/dic/cmf_resource';
     }
 }

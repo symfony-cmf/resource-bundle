@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,7 +45,7 @@ class Configuration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->beforeNormalization()
                             ->ifTrue(function ($n) {
-                                return is_array($n) && !isset($n['options']) && !isset($n['option']);
+                                return \is_array($n) && !isset($n['options']) && !isset($n['option']);
                             })
                             ->then(function ($n) {
                                 $options = [];
@@ -68,13 +70,13 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('options')
                                 ->beforeNormalization()
                                     ->ifTrue(function ($n) {
-                                        return is_array($n) && 0 !== count(array_filter($n, function ($i) {
+                                        return \is_array($n) && 0 !== \count(array_filter($n, function ($i) {
                                             return isset($i['collection']);
                                         }));
                                     })
                                     ->then(function ($n) {
                                         foreach ($n as $id => $item) {
-                                            if (!is_array($item) || !isset($item['collection'])) {
+                                            if (!\is_array($item) || !isset($item['collection'])) {
                                                 continue;
                                             }
 

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -108,7 +110,7 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         throw new \RuntimeException(sprintf(
             'Repository of class "%s" was not instantiated by this registry, I '.
             'don\'t know what its name is.',
-            get_class($repository)
+            \get_class($repository)
         ));
     }
 
@@ -117,7 +119,7 @@ class RepositoryRegistry implements RepositoryRegistryInterface
      */
     public function getRepositoryType(ResourceRepository $repository)
     {
-        $class = get_class($repository);
+        $class = \get_class($repository);
         if (!isset($this->typeMap[$class])) {
             throw new \RuntimeException(sprintf(
                 'Repository of class "%s" is not known, could not determine its type.',

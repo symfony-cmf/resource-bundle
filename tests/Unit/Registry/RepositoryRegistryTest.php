@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +17,7 @@ use Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry;
 use Symfony\Cmf\Component\Resource\Puli\Api\ResourceRepository;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
+class RepositoryRegistryTest extends \PHPUnit\Framework\TestCase
 {
     private $repository;
 
@@ -48,12 +50,12 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if an unknown repository is requested.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Repository "barbar" has not been registered, available repositories: "test"
      */
     public function testUnknownRepositoryName()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Repository "barbar" has not been registered, available repositories: "test"');
+
         $registry = $this->createRegistry(
             [
                 'test' => 'test_repository',
@@ -65,12 +67,12 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if an name is requested for an unknown repository.
-     *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage I don't know what its name is
      */
     public function testGetNameUnknownRepository()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('I don\'t know what its name is');
+
         $registry = $this->createRegistry([]);
 
         $repository = $this->prophesize(ResourceRepository::class);
@@ -79,12 +81,12 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * It should throw an exception if a type is requsted for an unknown repository.
-     *
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage could not determine its type
      */
     public function testGetTypeUnknownRepository()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('could not determine its type');
+
         $registry = $this->createRegistry([]);
 
         $repository = $this->prophesize(ResourceRepository::class);
@@ -131,9 +133,9 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             $repository = $this->prophesize(ResourceRepository::class);
             $this->container->register(
                 $serviceId,
-                get_class($repository->reveal())
+                \get_class($repository->reveal())
             );
-            $typeMap[get_class($repository->reveal())] = 'test/type';
+            $typeMap[\get_class($repository->reveal())] = 'test/type';
         }
 
         return new RepositoryRegistry(

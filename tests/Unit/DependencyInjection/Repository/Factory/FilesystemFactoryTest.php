@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,12 +45,12 @@ class FilesystemFactoryTest extends FactoryTestCase
 
     /**
      * It should throw an exception if the base dir is not .configured.
-     *
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
-     * @expectedExceptionMessage The required option "base_dir" is missing.
      */
     public function testBasedir()
     {
+        $this->expectException(\Symfony\Component\OptionsResolver\Exception\MissingOptionsException::class);
+        $this->expectExceptionMessage('The required option "base_dir" is missing.');
+
         $this->buildContainer(
             $this->resolveOptions([
             ])
