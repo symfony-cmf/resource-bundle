@@ -155,9 +155,9 @@ class DescriptionEnhancerPassTest extends \PHPUnit\Framework\TestCase
         ]);
         $this->container->findTaggedServiceIds('cmf_resource.description.enhancer')->willReturn([
             'service_1' => [['alias' => 'enhancer_1']],
-            'service_2' => [['alias' => 'enhancer_2', 'priority' => "255"]],
-            'service_3' => [['alias' => 'enhancer_3', 'priority' => "-250"]],
-            'service_4' => [['alias' => 'enhancer_4', 'priority' => "-255"]],
+            'service_2' => [['alias' => 'enhancer_2', 'priority' => '255']],
+            'service_3' => [['alias' => 'enhancer_3', 'priority' => '-250']],
+            'service_4' => [['alias' => 'enhancer_4', 'priority' => '-255']],
         ]);
 
         $this->container->getDefinition('cmf_resource.description.factory')->willReturn($this->factoryDefinition->reveal());

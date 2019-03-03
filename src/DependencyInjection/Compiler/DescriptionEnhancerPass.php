@@ -57,7 +57,7 @@ class DescriptionEnhancerPass implements CompilerPassInterface
                 ));
             }
 
-            $priority = $attributes['priority'] ?? "0";
+            $priority = $attributes['priority'] ?? '0';
             $enhancers[$name] = [$priority, new Reference($serviceId)];
         }
 

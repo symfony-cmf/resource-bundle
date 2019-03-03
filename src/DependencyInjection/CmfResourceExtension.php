@@ -44,7 +44,7 @@ class CmfResourceExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('resource.xml');
         $loader->load('description.xml');
         $loader->load('twig.xml');
